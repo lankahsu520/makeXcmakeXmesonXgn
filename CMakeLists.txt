@@ -1,0 +1,137 @@
+cmake_minimum_required(VERSION 3.16.3)
+project(helloworld)
+
+set(CMAKE_BUILD_TYPE Release)
+
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 0)
+set(VERSION_REVISION 1)
+set(VERSION_FULL ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
+
+
+#** ENVIRONMENT **
+execute_process(COMMAND whoami OUTPUT_VARIABLE WHOAMI OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+set(INSTALL_CPACK $ENV{PJ_CPACK})
+
+set(SDK_BIN_DIR $ENV{SDK_BIN_DIR})
+set(SDK_ETC_DIR $ENV{SDK_ETC_DIR})
+set(SDK_INC_DIR $ENV{SDK_INC_DIR})
+set(SDK_IOT_DIR $ENV{SDK_IOT_DIR})
+set(SDK_LIB_DIR $ENV{SDK_LIB_DIR})
+set(SDK_ROOT_DIR $ENV{SDK_ROOT_DIR})
+set(SDK_SBIN_DIR $ENV{SDK_SBIN_DIR})
+
+set(INSTALL_IOT_DIR $ENV{PJ_INSTALL_IOT})
+set(INSTALL_IOT_RELATIVE_DIR $ENV{PJ_INSTALL_IOT_RELATIVE})
+
+set(INSTALL_BIN_DIR bin)
+set(INSTALL_ETC_DIR etc)
+set(INSTALL_INC_DIR include)
+set(INSTALL_LIB_DIR lib)
+set(INSTALL_SBIN_DIR sbin)
+set(INSTALL_MODULES_DIR "${INSTALL_IOT_RELATIVE_DIR}/modules")
+
+
+#** message **
+message(">> (WHOAMI: ${WHOAMI})")
+message(">> (CMAKE_PROJECT_NAME: ${CMAKE_PROJECT_NAME})")
+message(">> (CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR})")
+message(">> (CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX})")
+
+message(">> (INSTALL_CPACK: ${INSTALL_CPACK})")
+
+message(">> (INSTALL_IOT_DIR: ${INSTALL_IOT_DIR})")
+
+message(">> (INSTALL_BIN_DIR: ${INSTALL_BIN_DIR})")
+message(">> (INSTALL_ETC_DIR: ${INSTALL_ETC_DIR})")
+message(">> (INSTALL_INC_DIR: ${INSTALL_INC_DIR})")
+message(">> (INSTALL_LIB_DIR: ${INSTALL_LIB_DIR})")
+message(">> (INSTALL_SBIN_DIR: ${INSTALL_SBIN_DIR})")
+message(">> (INSTALL_MODULES_DIR: ${INSTALL_MODULES_DIR})")
+
+
+#** CFLAGS & LDFLAGS **
+set(INC_DIR_ARY "${CMAKE_CURRENT_SOURCE_DIR}/" "${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories( ${INC_DIR_ARY} )
+
+add_compile_options("-D_GNU_SOURCE")
+add_compile_options("-Wno-unused-value")
+add_compile_options("-Wno-unused-result")
+add_compile_options("-Wno-format-truncation")
+
+
+#** LIBXXX_OBJS **
+set(LIBXXX_SRCS "helloworld_dbg.c")
+
+set(LIBNAME "helloworld")
+set(LIBNAME_SHARED "lib${LIBNAME}.so")
+set(LIBNAME_STATIC "lib${LIBNAME}.a")
+
+# share library
+add_library(${LIBNAME_SHARED} SHARED ${LIBXXX_SRCS})
+set_target_properties(${LIBNAME_SHARED} PROPERTIES OUTPUT_NAME ${LIBNAME})
+#set_target_properties(${LIBNAME_SHARED} PROPERTIES SUFFIX ".so.${VERSION_FULL}")
+set_target_properties(${LIBNAME_SHARED} PROPERTIES VERSION ${VERSION_FULL} SOVERSION ${VERSION_MAJOR})
+# static library
+add_library(${LIBNAME_STATIC} STATIC ${LIBXXX_SRCS})
+set_target_properties(${LIBNAME_STATIC} PROPERTIES OUTPUT_NAME ${LIBNAME})
+
+
+#** HEADER_FILES **
+set(HEADER_FILES "helloworld_dbg.h")
+
+#install(FILES ${HEADER_FILES}
+#		DESTINATION ${INSTALL_INC_DIR}
+#	)
+set_target_properties(${LIBNAME_SHARED} PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+
+
+#** Target (DUMMY_BINS) **
+add_executable(${CMAKE_PROJECT_NAME} ${CMAKE_PROJECT_NAME}.c)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBNAME_SHARED})
+#install(TARGETS  ${CMAKE_PROJECT_NAME}
+#		DESTINATION ${INSTALL_BIN_DIR}
+#	)
+
+add_executable(pipe2 pipe2.c)
+#install(TARGETS  pipe2
+#		DESTINATION ${INSTALL_BIN_DIR}
+#	)
+
+install(TARGETS ${CMAKE_PROJECT_NAME} pipe2 ${LIBNAME_SHARED}
+		RUNTIME DESTINATION ${INSTALL_BIN_DIR}
+		LIBRARY DESTINATION ${INSTALL_LIB_DIR}
+		PRIVATE_HEADER DESTINATION ${INSTALL_INC_DIR}
+	)
+
+
+#** Target (SHELL_SBINS) **
+set(SHELL_SBINS "")
+
+install(FILES ${SHELL_SBINS}
+		DESTINATION ${INSTALL_SBIN_DIR}
+	)
+
+
+#** Target (CONFS) **
+set(CONFS "")
+
+install(FILES ${CONFS}
+		DESTINATION ${INSTALL_IOT_DIR}
+	)
+
+#** CPack **
+# https://cmake.org/cmake/help/v3.7/module/CPack.html?highlight=cpack_generator
+SET(CPACK_GENERATOR "DEB;ZIP;TGZ")
+
+SET(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
+SET(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH ${VERSION_REVISION})
+SET(CPACK_PACKAGE_DIRECTORY ${INSTALL_CPACK})
+# CPack will be unpacked to /work
+SET(CPACK_PACKAGING_INSTALL_PREFIX "/work")
+
+# Set a Package Maintainer.
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER ${WHOAMI}) #required
+INCLUDE(CPack)
