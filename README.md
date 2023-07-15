@@ -146,6 +146,7 @@ $ (mkdir -p build_xxx)
 $ (cd build_xxx; cmake -DCMAKE_INSTALL_PREFIX=/work/codebase/lankahsu520-gitlab/helloworld/install -DCMAKE_TOOLCHAIN_FILE=/work/codebase/lankahsu520-gitlab/helloworld/cmake/build_x86.cmake  ..)
 $ (cd  build_xxx; make )
 $ (cd  build_xxx; make install)
+$ (cd build_xxx; make package)
 
 ```
 
