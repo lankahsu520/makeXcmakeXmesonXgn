@@ -195,6 +195,45 @@ helloworld is under the New BSD License (BSD-3-Clause).
 
 ## 7.1. [The Meson Build system](https://mesonbuild.com/index.html)
 
+## 7.2. [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+
+## 7.3. [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
+
+## 7.4. [Check if a Library Is 32-Bit or 64-Bit](https://www.baeldung.com/linux/check-library-32-or-64-bit)
+
+#### A. objdump
+
+```bash
+$ objdump -f  build_xxx/libhelloworld.so
+
+build_xxx/libhelloworld.so:     file format elf64-x86-64
+architecture: i386:x86-64, flags 0x00000150:
+HAS_SYMS, DYNAMIC, D_PAGED
+start address 0x0000000000001040
+
+$ objdump -f  build_xxx/libhelloworld.a
+In archive build_xxx/libhelloworld.a:
+
+helloworld_dbg.c.o:     file format elf64-x86-64
+architecture: i386:x86-64, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x0000000000000000
+
+```
+
+#### B. file
+
+```bash
+$ file build_xxx/libhelloworld.so.0.0.1
+build_xxx/libhelloworld.so.0.0.1: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=a40027cd19af73a2a7e8a278b3f060dae18a594a, with debug_info, not stripped
+
+$ file build_xxx/libhelloworld.a
+build_xxx/libhelloworld.a: current ar archive
+
+```
+
+
+
 # Appendix
 
 # I. Study
