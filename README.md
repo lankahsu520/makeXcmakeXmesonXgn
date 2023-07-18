@@ -18,7 +18,7 @@ flowchart LR
 	end
 	End([End])
 	environment[environment variable]
-	style environment fill:#bbf,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
+	style environment fill:#bbf,color:#000000,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
 
 	Start --> make --> End
 	make -..- environment
@@ -38,7 +38,7 @@ flowchart LR
 	end
 	End([End])
 	environment[environment variable]
-	style environment fill:#bbf,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
+	style environment fill:#bbf,color:#000000,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
 
 	Start --> cmake --> End
 	cmake -..- environment
@@ -50,8 +50,11 @@ flowchart LR
 > meson_options.txt 要與 meson.build (第一個讀取的) 放在同一層目錄。
 >
 > meson 的限制很多，如
-> 	不支援讀取 environment variable。
-> 	meson.build:1:0: ERROR: prefix value './install' must be an absolute path。
+>
+> ​	不支援讀取 environment variable。
+>
+> ​	meson.build:1:0: ERROR: prefix value './install' must be an absolute path。
+>
 > 這些都對於 Cross-Compilation 是很不友善的。
 >
 > 另外對於一個大專案，有 make, Perl, shell script, cmake 等混合之編譯環境， 就是這麼困難修改。
