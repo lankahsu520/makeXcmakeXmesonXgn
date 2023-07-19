@@ -27,6 +27,8 @@ flowchart LR
 ## 1.2. cmake
 
 >其實已經習慣 make 的運作，cmake 反而是多餘。
+>
+>請勿在 install - DESTINATION (CMakeLists.txt) 加入 CMAKE_INSTALL_PREFIX。
 
 
 ```mermaid
