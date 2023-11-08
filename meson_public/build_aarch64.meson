@@ -8,7 +8,7 @@
 #pcap-config = ''
 #c_args = ['--sysroot=/opt/fsl-imx-wayland/5.10-hardknott/sysroots/cortexa53-crypto-poky-linux', '-O2', '-pipe', '-g', '-feliminate-unused-debug-types']
 #c_link_args = ['--sysroot=/path/to/yocto-sdk/sysroots/aarch64-poky-linux', '-Wl,-O1', '-Wl,--hash-style=gnu', '-Wl,--as-needed', '-Wl,-z,relro,-z,now']
-#cpp_args = ['--sysroot=/work/codebase/sysroots/aarch64-poky-linux', '-O2', '-pipe', '-g', '-feliminate-unused-debug-types']
+#cpp_args = ['--sysroot=/path/to/yocto-sdk/sysroots/aarch64-poky-linux', '-O2', '-pipe', '-g', '-feliminate-unused-debug-types']
 #cpp_link_args = ['--sysroot=/opt/fsl-imx-wayland/5.10-hardknott/sysroots/cortexa53-crypto-poky-linux', '-Wl,-O1', '-Wl,--hash-style=gnu', '-Wl,--as-needed', '-Wl,-z,relro,-z,now']
 
 [properties]

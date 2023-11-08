@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RUN_SH=`basename $0`
-HINT="$0 {start|clean|distclean|test}"
+HINT="$0 {start|clean|distclean}"
 
 ACTION=$1
 
@@ -16,7 +16,7 @@ export SDK_USR_PREFIX_DIR="usr"
 
 export CONFIG_CUSTOMER_DEF_H="${PJ_ROOT}/include/customer_def.h"
 
-#export CROSS_FILE=
+export CROSS_FILE=
 
 export PJ_BUILD_DIR="build_xxx"
 export PJ_BUILD_VERBOSE="-v"
@@ -90,23 +90,14 @@ distclean_install_fn()
 	return 0
 }
 
-test_fn()
-{
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
-
-	DO_COMMAND="(make test ARG1=111 ARG2=222)"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
-
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	return 0
-}
-
 distclean_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
-	DO_COMMAND="(make distclean)"
+	DO_COMMAND="(rm -rf ${PJ_BUILD_DIR})"
 	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+
+	distclean_install_fn
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	return 0
@@ -117,6 +108,10 @@ cfg_fn()
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	#** customer_def.h **
+
+	#** build_xxx **
+	DO_COMMAND="(mkdir -p ${PJ_BUILD_DIR})"
+	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	datetime_fn
@@ -136,6 +131,11 @@ build_setup_fn()
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	#** build setup **
+	if [ -d ${PJ_BUILD_DIR} ]; then
+		#DO_COMMAND="(gn gen -C ${PJ_BUILD_DIR} --args='root_out_dir=\"${SDK_ROOT_DIR}\" ')"
+		DO_COMMAND="(gn gen -C ${PJ_BUILD_DIR})"
+		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	fi
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	datetime_fn
@@ -145,8 +145,10 @@ build_run_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
-	DO_COMMAND="(make ${PJ_MAKE_VERBOSE})"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	if [ -d ${PJ_BUILD_DIR} ]; then
+		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR})"
+		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	fi
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	datetime_fn
@@ -156,8 +158,10 @@ build_install_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
-	DO_COMMAND="(make install)"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	if [ -d ${PJ_BUILD_DIR} ]; then
+		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR} install)"
+		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	fi
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	datetime_fn
@@ -167,8 +171,10 @@ build_clean_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
-	DO_COMMAND="(make clean)"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	if [ -d ${PJ_BUILD_DIR} ]; then
+		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR} -t clean)"
+		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	fi
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	datetime_fn
@@ -210,9 +216,6 @@ main_fn()
 		;;
 		distclean)
 			distclean_fn
-		;;
-		test)
-			test_fn
 		;;
 		*)
 			showusage_fn

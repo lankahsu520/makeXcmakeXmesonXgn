@@ -1,3 +1,5 @@
+option('PJ_REVISION', type: 'string', value: '520')
+
 option('SDK_BIN_DIR', type: 'string', value: './install/bin')
 option('SDK_ETC_DIR', type: 'string', value: './install/etc')
 option('SDK_INC_DIR', type: 'string', value: './install/include')
@@ -8,3 +10,5 @@ option('SDK_SBIN_DIR', type: 'string', value: './install/sbin')
 option('PJ_INSTALL_IOT_RELATIVE', type: 'string', value: 'IoT')
 option('PJ_INSTALL_IOT', type: 'string', value: 'IoT')
 option('SDK_USR_PREFIX_DIR', type: 'string', value: '')
+
+option('PKG_CONFIG_SYSROOT_DIR', type: 'string', value: '')

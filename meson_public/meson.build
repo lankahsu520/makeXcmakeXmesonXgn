@@ -20,6 +20,8 @@ message('>> (sysconfdir: @0@)'.format( get_option('sysconfdir') ))
 #********************************************************************************
 # https://mesonbuild.com/Builtin-options.html
 PJ_ROOT = meson.source_root()#get_option('PJ_ROOT')
+PJ_REVISION = get_option('PJ_REVISION')
+PKG_CONFIG_SYSROOT_DIR = get_option('PKG_CONFIG_SYSROOT_DIR')
 
 #** INSTALL **
 #SDK_BIN_DIR = get_option('SDK_BIN_DIR')
@@ -59,6 +61,13 @@ if ( SDK_INC_DIR != '' ) and ( run_command('[', '-d', SDK_INC_DIR , ']', check :
 	INC_DIR_ARY += [ SDK_INC_DIR ]
 endif
 
+if ( PKG_CONFIG_SYSROOT_DIR != '' ) and ( run_command('[', '-d', PKG_CONFIG_SYSROOT_DIR + '/usr/include' + '/apache2', ']', check : false).returncode() == 0 )
+	found_apache2 = 1
+	INC_DIR_ARY += [ PKG_CONFIG_SYSROOT_DIR + '/usr/include' + '/apache2' ]
+else
+	found_apache2 = 0
+endif
+
 #********************************************************************************
 #** CFLAGS_CUSTOMER **
 #********************************************************************************
@@ -74,6 +83,10 @@ CFLAGS_CUSTOMER += ['-D_GNU_SOURCE' ]
 LIB_DIR_ARY = [ ]
 if ( SDK_LIB_DIR != '' ) and ( run_command('[', '-d', SDK_LIB_DIR , ']', check : false).returncode() == 0 )
 	LIB_DIR_ARY += [ SDK_LIB_DIR ]
+endif
+
+if ( PKG_CONFIG_SYSROOT_DIR != '' ) and ( run_command('[', '-d', PKG_CONFIG_SYSROOT_DIR + '/usr/lib', ']', check : false).returncode() == 0 )
+	LIB_DIR_ARY += [ PKG_CONFIG_SYSROOT_DIR + '/usr/lib' ]
 endif
 
 #********************************************************************************

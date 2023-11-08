@@ -20,7 +20,7 @@ flowchart LR
 	environment[environment variable]
 	style environment fill:#bbf,color:#000000,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
 
-	Start --> make --> End
+	Start --> make --> |make|Target -->End
 	make -..- environment
 ```
 
@@ -35,6 +35,7 @@ flowchart LR
 flowchart LR
 	Start([Start])
 	subgraph cmake[cmake]
+		direction LR
 		CMakeLists[CMakeLists.txt]
 		cross[-DCMAKE_TOOLCHAIN_FILE=./cmake/build_x86.cmake]
 	end
@@ -42,7 +43,7 @@ flowchart LR
 	environment[environment variable]
 	style environment fill:#bbf,color:#000000,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
 
-	Start --> cmake --> End
+	Start --> cmake --> build_xxx --> |make|Target --> End
 	cmake -..- environment
 
 ```
@@ -65,16 +66,78 @@ flowchart LR
 flowchart LR
 	Start([Start])
 	subgraph meson[meson]
+		direction LR
 		meson_build[meson.build]
 		meson_options[meson_options.txt]
 		cross[--cross-file ./meson_public/build_x86.meson]
 	end
 	End([End])
 	
-	Start --> meson --> End
+	Start --> meson --> build_xxx --> |ninja|Target --> End
 
 ```
 
+## 1.4. [GN (Generate Ninja)](https://gn.googlesource.com/gn/)
+
+> GN is a meta-build system that generates build files for [Ninja](https://ninja-build.org/).
+
+>對於老古板的我，擁有 make 和 Shellscript 就已經很滿足了，而且也很夠用。而使用 GN 也只是要處理 Open-source 附加需要的工具。
+>
+>學習另一套構建工具，只會佔用開發時間，就算號稱編譯時的神速，也是九牛一毛。另外如 meson 時所提及的，在混合編譯環境下，這些構建工具反而是阻礙。所以在你還沒把現有的專案轉至這些構建工具，請三思而後行。
+
+><font color="red">連安裝都很麻煩，請確定真的要用。</font>
+>
+><font color="red">所有 .gn、BUILD.gn 都要用 space 來縮排。</font>
+>
+><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！</font>
+
+```bash
+$ sudo apt install -y ninja-build
+$ ninja --version
+1.10.0
+
+# 自編
+$ sudo apt install -y clang
+$ clang --version
+clang version 10.0.0-4ubuntu1
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+$ git clone https://gn.googlesource.com/gn
+$ cd gn
+$ python build/gen.py
+$ ninja -C out
+$ sudo cp out/gn /usr/bin
+$ sudo cp out/gn_unittests /usr/bin
+$ gn --version
+2124 (e4702d740906)
+
+```
+```mermaid
+flowchart LR
+	Start([Start])
+	subgraph GN[GN]
+		direction LR
+		.gn[.gn]
+		BUILD.gn[BUILD.gn]
+		subgraph gnX[./gnX]
+			direction LR
+			BUILD.gn-gnX[BUILD.gn]
+			BUILDCONFIG.gn
+			subgraph toolchain[./gnX/toolchain]
+				BUILD.gn-toolchain[BUILD.gn]
+			end
+		end
+		.gn -..- gnX
+	end
+	End([End])
+	
+	environment[environment variable]
+	style environment fill:#bbf,color:#000000,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
+
+	Start --> GN --> build_xxx --> |ninja|Target --> End
+	GN -..- environment
+```
 # 2. Depend on
 
 
@@ -113,7 +176,7 @@ $ (make )
 $ (make install)
 ```
 
-## 4.2. cmake
+## 4.2. cmake & make
 
 ```bash
 $ ./build-cmake.sh distclean
@@ -155,7 +218,7 @@ $ (cd build_xxx; make package)
 
 ```
 
-## 4.3. meson
+## 4.3. meson & ninja
 
 ```bash
 $ ./build-meson.sh distclean
@@ -187,6 +250,23 @@ $ (ninja  -C build_xxx install)
 
 ```
 
+## 4.4. GN
+
+```bash
+$ ./build-gn.sh distclean
+$ ./build-gn.sh start
+
+```
+
+> 大致的命令如下
+
+```bash
+$ (mkdir -p build_xxx)
+$ (gn gen -C build_xxx)
+$ (ninja -v -C build_xxx)
+
+```
+
 # 5. Example or Usage
 
 ```bash
@@ -195,17 +275,23 @@ $ (ninja  -C build_xxx install)
 ```
 
 # 6. License
-helloworld is under the New BSD License (BSD-3-Clause).
+> makeXcmakeXmeson is under the New BSD License (BSD-3-Clause).
 
 # 7. Documentation
 
-## 7.1. [The Meson Build system](https://mesonbuild.com/index.html)
+> Run an example and read it.
 
-## 7.2. [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+# Appendix
 
-## 7.3. [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
+# I. Study
 
-## 7.4. [Check if a Library Is 32-Bit or 64-Bit](https://www.baeldung.com/linux/check-library-32-or-64-bit)
+## I.1. [The Meson Build system](https://mesonbuild.com/index.html)
+
+## I.2. [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+
+## I.3. [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
+
+## I.4. [Check if a Library Is 32-Bit or 64-Bit](https://www.baeldung.com/linux/check-library-32-or-64-bit)
 
 #### A. objdump
 
@@ -238,9 +324,8 @@ build_xxx/libhelloworld.a: current ar archive
 
 ```
 
+## I.5. [GN Quick Start guide](https://gn.googlesource.com/gn/+/main/docs/quick_start.md)
 
+## I.6. [GN Reference](https://gn.googlesource.com/gn/+/main/docs/reference.md)
 
-# Appendix
-
-# I. Study
 # II. Debug

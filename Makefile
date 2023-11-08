@@ -3,6 +3,7 @@ PWD=$(shell pwd)
 
 #** include *.mk **
 -include define.mk
+-include test.mk
 
 #[major].[minor].[revision].[build]
 VERSION_MAJOR = 0

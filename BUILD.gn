@@ -1,0 +1,40 @@
+#** Target (DUMMY_BINS) **
+executable("helloworld") {
+  sources = [ "helloworld.c" ]
+
+  deps = [
+    ":helloworld_shared",
+    ":helloworld_static",
+  ]
+
+}
+
+executable("pipe2") {
+  sources = [ "pipe2.c" ]
+}
+
+#** LIBXXX_OBJS **
+shared_library("helloworld_shared") {
+  sources = [
+    "helloworld_dbg.c",
+    "helloworld_dbg.h",
+  ]
+
+  output_name = "helloworld"
+  #print(">> " + output_name)
+  output_dir = "$root_out_dir"
+
+  # -DPJ_LANKA520
+  defines = [ "PJ_LANKA520" ]
+}
+
+static_library("helloworld_static") {
+  sources = [
+    "helloworld_dbg.c",
+    "helloworld_dbg.h",
+  ]
+
+  output_name = "helloworld_static"
+
+  #output_dir = "$root_out_dir/libs"
+}
