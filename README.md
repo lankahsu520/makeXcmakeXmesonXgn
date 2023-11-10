@@ -91,7 +91,7 @@ flowchart LR
 >
 ><font color="red">所有 .gn、BUILD.gn 都要用 space 來縮排。</font>
 >
-><font color="red">gn 建構後，檔案無 copy 出 output，所以沒有 ninja install。 </font>
+><font color="red">gn 建構後，檔案無法 copy 出 output，所以沒有 ninja install。 </font>
 >
 ><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！而且不精確的地方都跟官網一樣。</font>
 
@@ -168,9 +168,9 @@ install/
 ├── include
 │   └── helloworld_dbg.h
 └── lib
-    ├── libhelloworld.so -> libhelloworld.so.1
-    ├── libhelloworld.so.1 -> libhelloworld.so.1.0.0
-    └── libhelloworld.so.1.0.0
+    ├── libhelloworld.so -> libhelloworld.so.0
+    ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
+    └── libhelloworld.so.0.0.1
 
 3 directories, 6 files
 
@@ -196,20 +196,20 @@ install/
 ├── include
 │   └── helloworld_dbg.h
 └── lib
-    ├── libhelloworld.so -> libhelloworld.so.1
-    ├── libhelloworld.so.1 -> libhelloworld.so.1.0.0
-    └── libhelloworld.so.1.0.0
+    ├── libhelloworld.so -> libhelloworld.so.0
+    ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
+    └── libhelloworld.so.0.0.1
 
 3 directories, 6 files
 
 $ ll install_Cpack/
 total 64
-drwxrwxr-x  3 lanka lanka  4096  七  13 23:20 ./
-drwxrwxr-x 10 lanka lanka  4096  七  13 23:20 ../
-drwxrwxr-x  3 lanka lanka  4096  七  13 23:20 _CPack_Packages/
--rw-rw-r--  1 lanka lanka 16206  七  13 23:20 helloworld-0.0.1-Linux.deb
--rw-rw-r--  1 lanka lanka 15388  七  13 23:20 helloworld-0.0.1-Linux.tar.gz
--rw-rw-r--  1 lanka lanka 19880  七  13 23:20 helloworld-0.0.1-Linux.zip
+drwxrwxr-x  3 lanka lanka  4096 十一 10 22:29 ./
+drwxrwxr-x 12 lanka lanka  4096 十一 10 22:29 ../
+drwxrwxr-x  3 lanka lanka  4096 十一 10 22:29 _CPack_Packages/
+-rw-rw-r--  1 lanka lanka 16216 十一 10 22:29 helloworld-0.0.1-Linux.deb
+-rw-rw-r--  1 lanka lanka 15421 十一 10 22:29 helloworld-0.0.1-Linux.tar.gz
+-rw-rw-r--  1 lanka lanka 20185 十一 10 22:29 helloworld-0.0.1-Linux.zip
 
 ```
 
@@ -262,6 +262,19 @@ $ (ninja  -C build_xxx install)
 ```bash
 $ ./build-gn.sh distclean
 $ ./build-gn.sh build
+$ tree install/
+install/
+├── bin
+│   ├── cppCaller
+│   ├── cppHelloWorldv2
+│   ├── helloworld
+│   └── pipe2
+├── include
+│   └── helloworld_dbg.h
+└── lib
+    └── libhelloworld.so
+
+3 directories, 6 files
 
 ```
 
@@ -271,6 +284,9 @@ $ ./build-gn.sh build
 $ (mkdir -p build_xxx)
 $ (gn gen -C build_xxx)
 $ (ninja -v -C build_xxx)
+$ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/bin; cp -avr build_xxx/bin/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/bin)
+$ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/include; cp -avr build_xxx/include/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/include)
+$ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib; cp -avr build_xxx/lib/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib)
 
 ```
 

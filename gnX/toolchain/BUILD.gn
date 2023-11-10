@@ -29,7 +29,8 @@ toolchain("x86") {
 
     default_output_extension = ".a"
 
-    default_output_dir = "{{root_out_dir}}/lib"
+    #default_output_dir = "{{root_out_dir}}/lib"
+    default_output_dir = "{{target_out_dir}}/lib"
 
     outputs = [ afile ]
     output_prefix = "lib"
