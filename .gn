@@ -1,2 +1,4 @@
+
+print(">> 00 - .gn")
 # The location of the build configuration file.
 buildconfig = "//gnX/BUILDCONFIG.gn"

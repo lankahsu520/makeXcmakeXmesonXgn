@@ -20,7 +20,7 @@ export CROSS_FILE="${PJ_ROOT}/cmake/build_x86.cmake"
 
 export PJ_BUILD_DIR="build_xxx"
 export PJ_BUILD_VERBOSE="-v"
-#export PJ_MAKE_VERBOSE="VERBOSE=1"
+export PJ_MAKE_VERBOSE="VERBOSE=1"
 
 #export PKG_CONFIG_SYSROOT_DIR="${PJ_INSTALL}"
 

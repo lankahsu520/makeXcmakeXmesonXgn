@@ -5,6 +5,8 @@
 > 有時編譯 Open-source 常會遇到某些語法不清楚或錯誤時，上網路也找不著相關的教學，這時便是寫個相似的語法進行除錯，剛好這個範例提供了框架，方便進行修改和測試。
 >
 > 網路上有討論各個編譯時的快或慢，但在絕對的電腦下，速度不是問題；反而好除錯、好移植才是好的“自動化構建”。
+>
+> 構建工具只是輔助工具，我們要的是完成構建後的成果。身為軟體工程師的職責不應該花大時間去學寫構建工具，而構建工具越多 functions 和變異，越是造成進入門檻，請大家認真去思考這問題。
 
 ## 1.1. make
 
@@ -89,7 +91,7 @@ flowchart LR
 >
 ><font color="red">所有 .gn、BUILD.gn 都要用 space 來縮排。</font>
 >
-><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！</font>
+><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！而且不精確的地方都跟官網一樣。</font>
 
 ```bash
 $ sudo apt install -y ninja-build
@@ -118,17 +120,17 @@ flowchart LR
 	Start([Start])
 	subgraph GN[GN]
 		direction LR
-		.gn[.gn]
-		BUILD.gn[BUILD.gn]
+		.gn[0 - .gn]
+		BUILD.gn[2 - BUILD.gn]
 		subgraph gnX[./gnX]
 			direction LR
-			BUILD.gn-gnX[BUILD.gn]
-			BUILDCONFIG.gn
+			BUILD.gn-gnX[4 - BUILD.gn]
+			BUILDCONFIG.gn[1 - BUILDCONFIG.gn]
 			subgraph toolchain[./gnX/toolchain]
-				BUILD.gn-toolchain[BUILD.gn]
+				BUILD.gn-toolchain[3 - BUILD.gn]
 			end
 		end
-		.gn -..- gnX
+		.gn --> BUILDCONFIG.gn --> BUILD.gn --> BUILD.gn-toolchain --> BUILD.gn-gnX
 	end
 	End([End])
 	
@@ -152,7 +154,7 @@ flowchart LR
 
 ```bash
 $ ./build-make.sh distclean
-$ ./build-make.sh start
+$ ./build-make.sh build
 $ tree install/
 install/
 ├── bin
@@ -180,7 +182,7 @@ $ (make install)
 
 ```bash
 $ ./build-cmake.sh distclean
-$ ./build-cmake.sh start
+$ ./build-cmake.sh build
 $ tree install/
 install/
 ├── bin
@@ -222,7 +224,7 @@ $ (cd build_xxx; make package)
 
 ```bash
 $ ./build-meson.sh distclean
-$ ./build-meson.sh start
+$ ./build-meson.sh build
 $ tree install/
 install/
 ├── bin
@@ -254,7 +256,7 @@ $ (ninja  -C build_xxx install)
 
 ```bash
 $ ./build-gn.sh distclean
-$ ./build-gn.sh start
+$ ./build-gn.sh build
 
 ```
 
@@ -326,6 +328,44 @@ build_xxx/libhelloworld.a: current ar archive
 
 ## I.5. [GN Quick Start guide](https://gn.googlesource.com/gn/+/main/docs/quick_start.md)
 
+> 這是很失敗的 guide，短短一篇文章，在對 gn 還沒有一定的熟悉下，是完全不知其所道。
+>
+> 舉例，如在章節 Passing build arguments，
+>
+> ```bash
+> gn args out/my_build
+> ```
+> 照著指示操作，新增了 args ，但是呢 ? 怎麼用 ?
+>
+> 而且 "gn args --list"  也沒有相應的資料，總之從一開始到放棄只要10分鐘。
+
 ## I.6. [GN Reference](https://gn.googlesource.com/gn/+/main/docs/reference.md)
 
+## I.7. [How GN handles cross-compiling](https://gn.googlesource.com/gn/+/main/docs/cross_compiles.md)
+
 # II. Debug
+
+## II.1. The variable "is_component_build" was set as a build argument but never appeared in a declare_args() block in any buildfile.
+
+>WARNING at build arg file (use "gn args <out_dir>" to edit):2:22: Build argument has no effect.
+>is_component_build = true
+>                     ^---
+>The variable "is_component_build" was set as a build argument
+>but never appeared in a declare_args() block in any buildfile.
+>
+>To view all possible args, run "gn args --list <out_dir>"
+>
+>The build continued as if that argument was unspecified.
+
+> 建議在 gnX/BUILDCONFIG.gn 新增
+
+```bash
+declare_args()
+{
+  is_component_build = true
+  is_debug = false
+}
+```
+
+
+

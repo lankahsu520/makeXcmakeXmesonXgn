@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RUN_SH=`basename $0`
-HINT="$0 {start|clean|distclean}"
+HINT="$0 {build|clean|distclean|rebuild}"
 
 ACTION=$1
 
@@ -21,6 +21,7 @@ export CROSS_FILE=
 export PJ_BUILD_DIR="build_xxx"
 export PJ_BUILD_VERBOSE="-v"
 #export PJ_MAKE_VERBOSE="VERBOSE=1"
+export PJ_GN_ARGS="--args='is_debug=true'"
 
 #export PKG_CONFIG_SYSROOT_DIR="${PJ_INSTALL}"
 
@@ -132,8 +133,7 @@ build_setup_fn()
 
 	#** build setup **
 	if [ -d ${PJ_BUILD_DIR} ]; then
-		#DO_COMMAND="(gn gen -C ${PJ_BUILD_DIR} --args='root_out_dir=\"${SDK_ROOT_DIR}\" ')"
-		DO_COMMAND="(gn gen -C ${PJ_BUILD_DIR})"
+		DO_COMMAND="(rm -rf ${PJ_BUILD_DIR}; gn gen ${PJ_GN_ARGS} --root=${PJ_ROOT} -C ${PJ_BUILD_DIR})"
 		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	fi
 
@@ -188,7 +188,7 @@ build_cpack_fn()
 	datetime_fn
 }
 
-start_fn()
+build_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
@@ -208,11 +208,15 @@ main_fn()
 	do_env_fn
 
 	case $ACTION in
-		start)
-			start_fn
+		build)
+			build_fn
 		;;
 		clean)
 			build_clean_fn
+		;;
+		rebuild)
+			build_clean_fn
+			build_fn
 		;;
 		distclean)
 			distclean_fn

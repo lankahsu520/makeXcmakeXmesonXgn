@@ -33,6 +33,11 @@ SDK_ROOT_DIR = get_option('SDK_ROOT_DIR')
 #SDK_SBIN_DIR = get_option('SDK_SBIN_DIR')
 SDK_USR_PREFIX_DIR = get_option('SDK_USR_PREFIX_DIR')
 
+message('>> (SDK_INC_DIR: @0@)'.format( SDK_INC_DIR ))
+message('>> (SDK_LIB_DIR: @0@)'.format( SDK_LIB_DIR ))
+message('>> (SDK_ROOT_DIR: @0@)'.format( SDK_ROOT_DIR ))
+message('>> (SDK_USR_PREFIX_DIR: @0@)'.format( SDK_USR_PREFIX_DIR ))
+
 INSTALL_IOT_DIR = get_option('PJ_INSTALL_IOT')
 INSTALL_IOT_RELATIVE_DIR = get_option('PJ_INSTALL_IOT_RELATIVE')
 

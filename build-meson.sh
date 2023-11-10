@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RUN_SH=`basename $0`
-HINT="$0 {start|clean|distclean}"
+HINT="$0 {build|clean|distclean|rebuild}"
 
 ACTION=$1
 
@@ -200,7 +200,7 @@ build_cpack_fn()
 	datetime_fn
 }
 
-start_fn()
+build_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
@@ -220,11 +220,15 @@ main_fn()
 	do_env_fn
 
 	case $ACTION in
-		start)
-			start_fn
+		build)
+			build_fn
 		;;
 		clean)
 			build_clean_fn
+		;;
+		rebuild)
+			build_clean_fn
+			build_fn
 		;;
 		distclean)
 			distclean_fn

@@ -1,4 +1,42 @@
+print(">> 02 - BUILD.gn")
+
+#** librarys **
+LIBXXX_SO = [ "libhelloworld.so" ]
+shared_library("helloworld_shared") {
+  sources = [
+    "helloworld_dbg.c",
+    "helloworld_dbg.h",
+  ]
+
+  output_name = "helloworld"
+  #print(">> " + output_name)
+  #output_dir = "$root_out_dir"
+
+  # -DPJ_LANKA520
+  defines = [ "PJ_LANKA520" ]
+}
+
+LIBXXX_A = [ "libhelloworld_static.a" ]
+static_library("helloworld_static") {
+  sources = [
+    "helloworld_dbg.c",
+    "helloworld_dbg.h",
+  ]
+
+  output_name = "helloworld_static"
+
+  #output_dir = "$root_out_dir/libs"
+}
+
+print(">> (LIBXXX_SO: $LIBXXX_SO)")
+print(">> (LIBXXX_A: $LIBXXX_A)")
+
+#** Target (CLEAN_BINS) **
+
+print(">> (CLEAN_BINS: $CLEAN_BINS)")
+
 #** Target (DUMMY_BINS) **
+DUMMY_BINS += [ "helloworld" ]
 executable("helloworld") {
   sources = [ "helloworld.c" ]
 
@@ -9,32 +47,25 @@ executable("helloworld") {
 
 }
 
-executable("pipe2") {
+DUMMY_BINS += [ "pipe2" ]
+executable("pipe2")
+{
   sources = [ "pipe2.c" ]
 }
 
-#** LIBXXX_OBJS **
-shared_library("helloworld_shared") {
-  sources = [
-    "helloworld_dbg.c",
-    "helloworld_dbg.h",
-  ]
+print(">> (DUMMY_BINS: $DUMMY_BINS)")
 
-  output_name = "helloworld"
-  #print(">> " + output_name)
-  output_dir = "$root_out_dir"
+#** Target (CONFS) **
+#CONFS= []
+print(">> (CONFS: $CONFS)")
 
-  # -DPJ_LANKA520
-  defines = [ "PJ_LANKA520" ]
-}
+#** HEADER_FILES **
+HEADER_FILES += [ "helloworld_dbg.h" ]
+print(">> (HEADER_FILES: $HEADER_FILES)")
 
-static_library("helloworld_static") {
-  sources = [
-    "helloworld_dbg.c",
-    "helloworld_dbg.h",
-  ]
+#install_target("my_install_target") {
+#  data = HEADER_FILES
+#  path = SDK_INC_DIR
+#}
 
-  output_name = "helloworld_static"
-
-  #output_dir = "$root_out_dir/libs"
-}
+#is_debug = false

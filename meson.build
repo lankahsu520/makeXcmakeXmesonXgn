@@ -28,6 +28,10 @@ message('>> (build_machine cpu: @0@, system: @1@, endian: @2@)'.format( build_ma
 message('>> (source_root: @0@)'.format( meson.source_root() ))
 message('>> (host_machine.system: @0@)'.format( host_machine.system() ))
 
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
 
 #** CFLAGS & LDFLAGS **
 # I prefer to use CFLAGS_CUSTOMER
@@ -37,6 +41,11 @@ COMPILER_ARG += [ '-Wno-unused-result' ]
 COMPILER_ARG += [ '-Wno-format-truncation' ]
 add_project_arguments(COMPILER_ARG, language: 'c')
 
+message('>> (COMPILER_ARG: @0@)'.format( COMPILER_ARG ))
+message('>> (COMPILER_ARG: @0@)'.format( COMPILER_ARG ))
+message('>> (INC_DIR_ARY: @0@)'.format( INC_DIR_ARY ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
 
 #** LIBXXX_OBJS **
 VERSION = VERSION_FULL#meson.project_version()

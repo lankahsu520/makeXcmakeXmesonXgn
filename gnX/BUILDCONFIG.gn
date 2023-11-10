@@ -1,8 +1,56 @@
+#********************************************************************************
+#** arguments **
+#********************************************************************************
+print(">> 01 - gnX/BUILDCONFIG.gn")
+
+declare_args()
+{
+  is_component_build = true
+  is_debug = false
+}
+
+print(">> (is_component_build: $is_component_build)")
+print(">> (is_debug: $is_debug)")
+
+
+#********************************************************************************
+#** getenv (PJ_XXX) **
+#********************************************************************************
+PJ_ROOT = getenv("PJ_ROOT")
+print(">> (PJ_ROOT: $PJ_ROOT)")
+
+PJ_TARGET = getenv("PJ_TARGET")
+print(">> (PJ_TARGET: $PJ_TARGET)")
+
+PJ_HOST = getenv("PJ_HOST")
+print(">> (PJ_HOST: $PJ_HOST)")
+if (PJ_HOST != "")
+{
+  PJ_CROSS = "${PJ_HOST}-"
+  print(">> (PJ_CROSS: $PJ_CROSS)")
+}
+
+CFLAGS = getenv("CFLAGS")
+print(">> (CFLAGS: $CFLAGS)")
+
+SDK_BIN_DIR = getenv("SDK_BIN_DIR")
+print(">> (SDK_BIN_DIR: $SDK_BIN_DIR)")
+SDK_INC_DIR = getenv("SDK_INC_DIR")
+print(">> (SDK_INC_DIR: $SDK_INC_DIR)")
+SDK_LIB_DIR = getenv("SDK_LIB_DIR")
+print(">> (SDK_LIB_DIR: $SDK_LIB_DIR)")
+SDK_ROOT_DIR = getenv("SDK_ROOT_DIR")
+print(">> (SDK_ROOT_DIR: $SDK_ROOT_DIR)")
+
+
+#********************************************************************************
+#** https://gn.googlesource.com/gn/+/refs/heads/main/examples/simple_build/build/BUILDCONFIG.gn **
+#********************************************************************************
 if (target_os == "") {
   target_os = host_os
 }
 
-target_cpu = getenv("PJ_TARGET")
+target_cpu = PJ_TARGET
 if (target_cpu == "") {
   target_cpu = host_cpu
 }
@@ -13,18 +61,10 @@ if (current_os == "") {
   current_os = target_os
 }
 
-print(">> {target_os: $target_os}")
-print(">> {target_cpu: $target_cpu}")
-print(">> {current_cpu: $current_cpu}")
-print(">> {current_os: $current_os}")
-
-PJ_HOST = getenv("PJ_HOST")
-print(">> {PJ_HOST: $PJ_HOST}")
-if (PJ_HOST != "")
-{
-  PJ_CROSS = "${PJ_HOST}-"
-  print(">> {PJ_CROSS: $PJ_CROSS}")
-}
+print(">> (target_os: $target_os)")
+print(">> (target_cpu: $target_cpu)")
+print(">> (current_cpu: $current_cpu)")
+print(">> (current_os: $current_os)")
 
 is_linux = host_os == "linux" && current_os == "linux" && target_os == "linux"
 is_mac = host_os == "mac" && current_os == "mac" && target_os == "mac"
@@ -42,12 +82,6 @@ set_defaults("executable") {
 set_defaults("static_library") {
   configs = _shared_binary_target_configs
 }
-set_defaults("shared_library") {
-  configs = _shared_binary_target_configs
-}
-set_defaults("source_set") {
-  configs = _shared_binary_target_configs
-}
 
 if (target_cpu == "aarch64")
 {
@@ -61,3 +95,14 @@ else
 {
   set_default_toolchain("//gnX/toolchain:x86")
 }
+
+#** Install **
+DUMMY_BINS = []
+LIBXXX_SO = []
+LIBXXX_A = []
+LIBXXXS = []
+CLEAN_BINS = []
+DUMMY_BINS = []
+CONFS = []
+HEADER_FILES = []
+#HEADER_FILES += [ "helloworld_dbg.h" ]
