@@ -91,7 +91,7 @@ flowchart LR
 >
 ><font color="red">所有 .gn、BUILD.gn 都要用 space 來縮排。</font>
 >
-><font color="red">gn 建構後，檔案無 copy 出 output，所以沒有 ninja install </font>
+><font color="red">gn 建構後，檔案無 copy 出 output，所以沒有 ninja install。 </font>
 >
 ><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！而且不精確的地方都跟官網一樣。</font>
 
