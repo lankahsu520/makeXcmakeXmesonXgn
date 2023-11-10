@@ -16,7 +16,7 @@
 
 // a simple cpp
 // include here, we don't need to extern "C" in cpp
-#include "cppHelloWorld.h"
+//#include "cppHelloWorldv2.h"
 
 #ifdef __cplusplus
 //extern "C" {

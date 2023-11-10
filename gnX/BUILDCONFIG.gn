@@ -3,6 +3,7 @@
 #********************************************************************************
 print(">> 01 - gnX/BUILDCONFIG.gn")
 
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_declare_args
 declare_args()
 {
   is_component_build = true
@@ -10,37 +11,30 @@ declare_args()
 }
 
 print(">> (is_component_build: $is_component_build)")
-print(">> (is_debug: $is_debug)")
-
+if (defined(is_debug)) {
+  print(">> (is_debug: $is_debug)")
+}
 
 #********************************************************************************
 #** getenv (PJ_XXX) **
 #********************************************************************************
 PJ_ROOT = getenv("PJ_ROOT")
-print(">> (PJ_ROOT: $PJ_ROOT)")
 
 PJ_TARGET = getenv("PJ_TARGET")
-print(">> (PJ_TARGET: $PJ_TARGET)")
 
 PJ_HOST = getenv("PJ_HOST")
-print(">> (PJ_HOST: $PJ_HOST)")
+PJ_CROSS = ""
 if (PJ_HOST != "")
 {
   PJ_CROSS = "${PJ_HOST}-"
-  print(">> (PJ_CROSS: $PJ_CROSS)")
 }
 
 CFLAGS = getenv("CFLAGS")
-print(">> (CFLAGS: $CFLAGS)")
 
 SDK_BIN_DIR = getenv("SDK_BIN_DIR")
-print(">> (SDK_BIN_DIR: $SDK_BIN_DIR)")
 SDK_INC_DIR = getenv("SDK_INC_DIR")
-print(">> (SDK_INC_DIR: $SDK_INC_DIR)")
 SDK_LIB_DIR = getenv("SDK_LIB_DIR")
-print(">> (SDK_LIB_DIR: $SDK_LIB_DIR)")
 SDK_ROOT_DIR = getenv("SDK_ROOT_DIR")
-print(">> (SDK_ROOT_DIR: $SDK_ROOT_DIR)")
 
 
 #********************************************************************************
@@ -61,11 +55,6 @@ if (current_os == "") {
   current_os = target_os
 }
 
-print(">> (target_os: $target_os)")
-print(">> (target_cpu: $target_cpu)")
-print(">> (current_cpu: $current_cpu)")
-print(">> (current_os: $current_os)")
-
 is_linux = host_os == "linux" && current_os == "linux" && target_os == "linux"
 is_mac = host_os == "mac" && current_os == "mac" && target_os == "mac"
 
@@ -79,10 +68,17 @@ set_defaults("executable") {
   # Executables get this additional configuration.
   configs += [ "//gnX:executable_ldconfig" ]
 }
+
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_set_defaults
+set_defaults("shared_library") {
+  configs = _shared_binary_target_configs
+}
+
 set_defaults("static_library") {
   configs = _shared_binary_target_configs
 }
 
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_set_default_toolchain
 if (target_cpu == "aarch64")
 {
   set_default_toolchain("//gnX/toolchain:aarch64")
@@ -106,3 +102,27 @@ DUMMY_BINS = []
 CONFS = []
 HEADER_FILES = []
 #HEADER_FILES += [ "helloworld_dbg.h" ]
+
+
+#********************************************************************************
+#** Print Environment Variables **
+#********************************************************************************
+if ( is_debug == true )
+{
+  print(">> (PJ_ROOT: $PJ_ROOT)")
+  print(">> (PJ_TARGET: $PJ_TARGET)")
+  print(">> (PJ_HOST: $PJ_HOST)")
+  print(">> (PJ_CROSS: $PJ_CROSS)")
+
+  print(">> (CFLAGS: $CFLAGS)")
+
+  print(">> (SDK_BIN_DIR: $SDK_BIN_DIR)")
+  print(">> (SDK_INC_DIR: $SDK_INC_DIR)")
+  print(">> (SDK_LIB_DIR: $SDK_LIB_DIR)")
+  print(">> (SDK_ROOT_DIR: $SDK_ROOT_DIR)")
+
+  print(">> (target_os: $target_os)")
+  print(">> (target_cpu: $target_cpu)")
+  print(">> (current_cpu: $current_cpu)")
+  print(">> (current_os: $current_os)")
+}

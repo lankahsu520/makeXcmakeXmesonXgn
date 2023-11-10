@@ -1,24 +1,27 @@
-# Copyright 2014 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
 print(">> 03 - gnX/BUILD.gn")
 
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_config
 config("compiler_defaults") {
-  if (current_os == "linux") {
-    cflags = [
-      "-D_GNU_SOURCE"
-      ,"-Wformat-truncation=0"
-      ,"-Wno-unused-value"
-      ,"-Wno-unused-result"
-      ,"-Wno-format-truncation"
-    ]
-    cflags_c = [
-    ]
-    include_dirs = [
-    ]
-  }
+  cflags = [
+    "-D_GNU_SOURCE"
+    ,"-Wformat-truncation=0"
+    ,"-Wno-unused-value"
+    ,"-Wno-unused-result"
+    ,"-Wno-format-truncation"
+  ]
+  cflags_c = [
+  ]
+  include_dirs = [
+    "//"
+  ]
 
-  print(">> {cflags: $cflags}")
+  defines = [ "PJ_LANKA520V0" ]
+
+  if ( is_debug == true )
+  {
+    print(">> {cflags: $cflags}")
+    print(">> {defines: $defines}")
+  }
 }
 
 config("executable_ldconfig") {
@@ -27,5 +30,13 @@ config("executable_ldconfig") {
       "-Wl,-rpath=./"
       ,"-L./"
     ]
+  }
+
+  defines = [ "PJ_LANKA520V9" ]
+
+  if ( is_debug == true )
+  {
+    print(">> {ldflags: $ldflags}")
+    print(">> {defines: $defines}")
   }
 }

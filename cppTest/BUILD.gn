@@ -1,15 +1,7 @@
 print(">> 03 - cppTest/BUILD.gn")
 
-# must have an executable("cppTest") <-> foldername("cppTest")
-executable("cppTest") {
-  sources = [
-    "cppHelloWorldv2.cpp",
-  ]
-
-  output_name = "cppHelloWorldv2"
-}
-
-shared_library("cppHelloWorld") {
+#** librarys **
+static_library("cppHelloWorld") {
   sources = [
     "cppHelloWorld.cpp",
     "cppHelloWorld.h",
@@ -18,7 +10,35 @@ shared_library("cppHelloWorld") {
   output_name = "cppHelloWorld"
 
   # -DPJ_LANKA520
-  defines = [ "PJ_LANKA520" ]
+  defines = [ "PJ_LANKA520V8" ]
+
+  if ( is_debug == true )
+  {
+    print(">> shared_library / cppHelloWorld - $configs")
+  }
+}
+
+#** Target (CLEAN_BINS) **
+
+#** Target (DUMMY_BINS) **
+
+# must have an executable("cppTest") <-> foldername("cppTest")
+executable("cppTest") {
+  print_stack_trace()
+
+  sources = [
+    "cppHelloWorldv2.cpp",
+  ]
+
+  output_name = "cppHelloWorldv2"
+
+  defines = [ "PJ_LANKA520V7" ]
+  include_dirs = [ "//cppTest" ]
+
+  if ( is_debug == true )
+  {
+    print(">> executable / cppTest - $configs")
+  }
 }
 
 executable("cppCaller") {
@@ -29,4 +49,12 @@ executable("cppCaller") {
   deps = [
     ":cppHelloWorld",
   ]
+
+  defines = [ "PJ_LANKA520V6" ]
+  include_dirs = [ "//cppTest" ]
+
+  if ( is_debug == true )
+  {
+    print(">> executable / cppCaller - $configs")
+  }
 }

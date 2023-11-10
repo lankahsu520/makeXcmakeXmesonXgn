@@ -2,6 +2,7 @@ print(">> 02 - BUILD.gn")
 
 #** librarys **
 LIBXXX_SO = [ "libhelloworld.so" ]
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_shared_library
 shared_library("helloworld_shared") {
   sources = [
     "helloworld_dbg.c",
@@ -12,11 +13,17 @@ shared_library("helloworld_shared") {
   #print(">> " + output_name)
   #output_dir = "$root_out_dir"
 
-  # -DPJ_LANKA520
-  defines = [ "PJ_LANKA520" ]
+  # -DPJ_LANKA520V2
+  defines = [ "PJ_LANKA520V2" ]
+
+  if ( is_debug == true )
+  {
+    print(">> shared_library / helloworld_shared - $configs")
+  }
 }
 
 LIBXXX_A = [ "libhelloworld_static.a" ]
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_static_library
 static_library("helloworld_static") {
   sources = [
     "helloworld_dbg.c",
@@ -26,6 +33,13 @@ static_library("helloworld_static") {
   output_name = "helloworld_static"
 
   #output_dir = "$root_out_dir/libs"
+
+  defines = [ "PJ_LANKA520V3" ]
+
+  if ( is_debug == true )
+  {
+    print(">> static_library / helloworld_static - $configs")
+  }
 }
 
 print(">> (LIBXXX_SO: $LIBXXX_SO)")
@@ -37,6 +51,7 @@ print(">> (CLEAN_BINS: $CLEAN_BINS)")
 
 #** Target (DUMMY_BINS) **
 DUMMY_BINS += [ "helloworld" ]
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_executable
 executable("helloworld") {
   sources = [ "helloworld.c" ]
 
@@ -45,12 +60,21 @@ executable("helloworld") {
     ":helloworld_static",
   ]
 
+  if ( is_debug == true )
+  {
+    print(">> executable / helloworld - $configs")
+  }
 }
 
 DUMMY_BINS += [ "pipe2" ]
 executable("pipe2")
 {
   sources = [ "pipe2.c" ]
+
+  if ( is_debug == true )
+  {
+    print(">> executable / pipe2 - $configs")
+  }
 }
 
 print(">> (DUMMY_BINS: $DUMMY_BINS)")
@@ -63,11 +87,30 @@ print(">> (CONFS: $CONFS)")
 HEADER_FILES += [ "helloworld_dbg.h" ]
 print(">> (HEADER_FILES: $HEADER_FILES)")
 
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_copy
+# .PHONY: install
+# use |$target_out_dir| or |$target_gen_dir| to reference the output 
+copy("install_inc") {
+  sources  = HEADER_FILES
+  outputs = [ "$target_out_dir/../include/{{source_file_part}}" ]
+}
 
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_group
+# .PHONY: others
+# ninja -v -C build_xxx others
 group("others") {
   deps = [
     # This will expand to the name "//tutorial:tutorial" which is the full name
     # of our new target. Run "gn help labels" for more.
     "//cppTest"
+    ,":install_inc"
  ]
+
+  if ( is_debug == true )
+  {
+    print(">> (target_gen_dir: $target_gen_dir)")
+    print(">> (target_out_dir: $target_out_dir)")
+    print(">> (root_build_dir: $root_build_dir)")
+    print(">> (root_out_dir: $root_out_dir)")
+  }
 }

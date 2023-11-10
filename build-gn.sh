@@ -159,8 +159,19 @@ build_install_fn()
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	if [ -d ${PJ_BUILD_DIR} ]; then
-		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR} install)"
+		#DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR} install)"
+		#do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+
+		DO_COMMAND="(mkdir -p ${SDK_BIN_DIR}; cp -avr ${PJ_BUILD_DIR}/bin/* ${SDK_BIN_DIR})"
 		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+
+		DO_COMMAND="(mkdir -p ${SDK_INC_DIR}; cp -avr ${PJ_BUILD_DIR}/include/* ${SDK_INC_DIR})"
+		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+
+		DO_COMMAND="(mkdir -p ${SDK_LIB_DIR}; cp -avr ${PJ_BUILD_DIR}/lib/* ${SDK_LIB_DIR})"
+		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+
+
 	fi
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."

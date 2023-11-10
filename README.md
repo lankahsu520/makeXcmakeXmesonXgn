@@ -91,6 +91,8 @@ flowchart LR
 >
 ><font color="red">所有 .gn、BUILD.gn 都要用 space 來縮排。</font>
 >
+><font color="red">gn 建構後，檔案無 copy 出 output，所以沒有 ninja install </font>
+>
 ><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！而且不精確的地方都跟官網一樣。</font>
 
 ```bash
@@ -290,11 +292,37 @@ $ (ninja -v -C build_xxx)
 
 # I. Study
 
-## I.1. [The Meson Build system](https://mesonbuild.com/index.html)
+## I.1. Meson
 
-## I.2. [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+#### A. [The Meson Build system](https://mesonbuild.com/index.html)
 
-## I.3. [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
+## I.2. CMake
+
+#### A. [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+
+#### B. [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
+
+## I.3. [GN](https://gn.googlesource.com/gn/)
+
+> 參考的範例很少，官網
+
+#### A. [GN Quick Start guide](https://gn.googlesource.com/gn/+/main/docs/quick_start.md)
+
+> 這是很失敗的 guide，短短一篇文章，在對 gn 還沒有一定的熟悉下，是完全不知其所道。
+>
+> 舉例，如在章節 Passing build arguments，
+>
+> ```bash
+> gn args out/my_build
+> ```
+>
+> 照著指示操作，新增了 args ，但是呢 ? 怎麼用 ?
+>
+> 而且 "gn args --list"  也沒有相應的資料，總之從一開始到放棄只要10分鐘。
+
+#### B. [GN Reference](https://gn.googlesource.com/gn/+/main/docs/reference.md)
+
+#### C. [How GN handles cross-compiling](https://gn.googlesource.com/gn/+/main/docs/cross_compiles.md)
 
 ## I.4. [Check if a Library Is 32-Bit or 64-Bit](https://www.baeldung.com/linux/check-library-32-or-64-bit)
 
@@ -328,23 +356,6 @@ $ file build_xxx/libhelloworld.a
 build_xxx/libhelloworld.a: current ar archive
 
 ```
-
-## I.5. [GN Quick Start guide](https://gn.googlesource.com/gn/+/main/docs/quick_start.md)
-
-> 這是很失敗的 guide，短短一篇文章，在對 gn 還沒有一定的熟悉下，是完全不知其所道。
->
-> 舉例，如在章節 Passing build arguments，
->
-> ```bash
-> gn args out/my_build
-> ```
-> 照著指示操作，新增了 args ，但是呢 ? 怎麼用 ?
->
-> 而且 "gn args --list"  也沒有相應的資料，總之從一開始到放棄只要10分鐘。
-
-## I.6. [GN Reference](https://gn.googlesource.com/gn/+/main/docs/reference.md)
-
-## I.7. [How GN handles cross-compiling](https://gn.googlesource.com/gn/+/main/docs/cross_compiles.md)
 
 # II. Debug
 

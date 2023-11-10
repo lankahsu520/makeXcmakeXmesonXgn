@@ -1,9 +1,10 @@
 print(">> 03 - gnX/toolchain/BUILD.gn")
 
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#func_toolchain
 toolchain("x86") {
   tool("cc") {
     depfile = "{{output}}.d"
-    command = "gcc $CFLAGS {{include_dirs}} {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
+    command = "gcc $CFLAGS {{defines}} {{include_dirs}} {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
     depsformat = "gcc"
     description = "CC {{output}}"
     outputs =
@@ -12,7 +13,7 @@ toolchain("x86") {
 
   tool("cxx") {
     depfile = "{{output}}.d"
-    command = "g++ $CFLAGS {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
+    command = "g++ $CFLAGS {{defines}} {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
     depsformat = "gcc"
     description = "CXX {{output}}"
     outputs =
