@@ -1,6 +1,3 @@
-# Copyright 2014 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
 print(">> 03 - gnX/toolchain/BUILD.gn")
 
 toolchain("x86") {
@@ -15,7 +12,7 @@ toolchain("x86") {
 
   tool("cxx") {
     depfile = "{{output}}.d"
-    command = "g++ {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
+    command = "g++ $CFLAGS {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
     depsformat = "gcc"
     description = "CXX {{output}}"
     outputs =
@@ -23,12 +20,17 @@ toolchain("x86") {
   }
 
   tool("alink") {
+    aname = "{{target_output_name}}{{output_extension}}"  # e.g. "libfoo.a".
+    afile = "{{output_dir}}/$aname"
+
     command = "rm -f {{output}} && ar rcs {{output}} {{inputs}}"
     description = "AR {{target_output_name}}{{output_extension}}"
 
-    outputs =
-        [ "{{target_out_dir}}/{{target_output_name}}{{output_extension}}" ]
     default_output_extension = ".a"
+
+    default_output_dir = "{{root_out_dir}}/lib"
+
+    outputs = [ afile ]
     output_prefix = "lib"
   }
 
@@ -55,7 +57,7 @@ toolchain("x86") {
 
     # Use this for {{output_dir}} expansions unless a target manually overrides
     # it (in which case {{output_dir}} will be what the target specifies).
-    default_output_dir = "{{root_out_dir}}"
+    default_output_dir = "{{root_out_dir}}/lib"
 
     outputs = [ sofile ]
     link_output = sofile
@@ -64,7 +66,7 @@ toolchain("x86") {
   }
 
   tool("link") {
-    outfile = "{{target_output_name}}{{output_extension}}"
+    outfile = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
     rspfile = "$outfile.rsp"
     if (is_mac) {
       command = "g++ {{ldflags}} -o $outfile @$rspfile {{solibs}} {{libs}}"
@@ -72,7 +74,7 @@ toolchain("x86") {
       command = "g++ {{ldflags}} -o $outfile @$rspfile {{solibs}} {{libs}}"
     }
     description = "LINK $outfile"
-    default_output_dir = "{{root_out_dir}}"
+    default_output_dir = "{{root_out_dir}}/bin"
     rspfile_content = "{{inputs}}"
     outputs = [ outfile ]
   }

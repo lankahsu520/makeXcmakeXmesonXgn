@@ -63,9 +63,11 @@ print(">> (CONFS: $CONFS)")
 HEADER_FILES += [ "helloworld_dbg.h" ]
 print(">> (HEADER_FILES: $HEADER_FILES)")
 
-#install_target("my_install_target") {
-#  data = HEADER_FILES
-#  path = SDK_INC_DIR
-#}
 
-#is_debug = false
+group("others") {
+  deps = [
+    # This will expand to the name "//tutorial:tutorial" which is the full name
+    # of our new target. Run "gn help labels" for more.
+    "//cppTest"
+ ]
+}

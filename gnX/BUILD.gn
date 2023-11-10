@@ -1,7 +1,7 @@
 # Copyright 2014 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-print(">> 04 - gnX/BUILD.gn")
+print(">> 03 - gnX/BUILD.gn")
 
 config("compiler_defaults") {
   if (current_os == "linux") {

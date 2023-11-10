@@ -1,0 +1,32 @@
+print(">> 03 - cppTest/BUILD.gn")
+
+# must have an executable("cppTest") <-> foldername("cppTest")
+executable("cppTest") {
+  sources = [
+    "cppHelloWorldv2.cpp",
+  ]
+
+  output_name = "cppHelloWorldv2"
+}
+
+shared_library("cppHelloWorld") {
+  sources = [
+    "cppHelloWorld.cpp",
+    "cppHelloWorld.h",
+  ]
+
+  output_name = "cppHelloWorld"
+
+  # -DPJ_LANKA520
+  defines = [ "PJ_LANKA520" ]
+}
+
+executable("cppCaller") {
+  sources = [
+    "cppCaller.cpp",
+  ]
+
+  deps = [
+    ":cppHelloWorld",
+  ]
+}
