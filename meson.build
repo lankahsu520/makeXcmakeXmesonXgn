@@ -2,6 +2,7 @@ project('helloworld', 'c', version : '0.0.1')
 #Built-in options
 #https://mesonbuild.com/Builtin-options.html
 #project('helloworld', 'c', version : '0.0.1', default_options : ['b_asneeded=false', 'b_lundef=false'])
+message('>> 00 - meson.build')
 
 LIB_REQUIRE_FULL=false
 subdir('meson_public')

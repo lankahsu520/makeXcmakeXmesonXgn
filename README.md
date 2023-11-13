@@ -69,12 +69,13 @@ flowchart LR
 	Start([Start])
 	subgraph meson[meson]
 		direction LR
-		meson_build[meson.build]
+		meson_build[00 - meson.build]
 		meson_options[meson_options.txt]
 		cross[--cross-file build.meson]
 		subgraph meson_public[./meson_public]
-			meson_build_public[meson.build]
+			meson_build_public[01 - meson.build]
 		end
+		meson_build_public-..-meson_options
 	end
 	End([End])
 	
@@ -83,6 +84,7 @@ flowchart LR
 ```
 
 ```bash
+# meson 0.53 在 cross 時會出問題，請不要使用
 # upgrade meson to 0.63
 $ pip3 install meson==0.63
 ```
@@ -99,7 +101,7 @@ $ pip3 install meson==0.63
 >
 ><font color="red">所有 .gn、BUILD.gn 都要用 space 來縮排。</font>
 >
-><font color="red">gn 建構後，檔案無法 copy 出 output，所以沒有 ninja install。 </font>
+><font color="red">gn 建構後，檔案無法從 output 中  copy 出來，所以沒有 ninja install。 </font>
 >
 ><font color="red">排除官方的 guide，市面上可找到的說明或範例，少！而且不精確的地方都跟官網一樣。</font>
 
@@ -130,7 +132,7 @@ flowchart LR
 	Start([Start])
 	subgraph GN[GN]
 		direction LR
-		.gn[0 - .gn]
+		.gn[00 - .gn]
 		BUILD.gn[02 - BUILD.gn]
 		subgraph gnX[./gnX]
 			direction LR
