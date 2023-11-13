@@ -79,6 +79,13 @@ flowchart LR
 
 ```
 
+```bash
+# upgrade meson to 0.63
+$ pip3 install meson==0.63
+```
+
+
+
 ## 1.4. [GN (Generate Ninja)](https://gn.googlesource.com/gn/)
 
 > GN is a meta-build system that generates build files for [Ninja](https://ninja-build.org/).
@@ -155,7 +162,9 @@ flowchart LR
 
 # 4. Build
 
-## 4.1. make
+## 4.1. Native-Compilation
+
+#### A. make
 
 ```bash
 $ ./build-make.sh distclean
@@ -183,7 +192,7 @@ $ (make )
 $ (make install)
 ```
 
-## 4.2. cmake & make
+#### B. cmake & make
 
 ```bash
 $ ./build-cmake.sh distclean
@@ -225,7 +234,7 @@ $ (cd build_xxx; make package)
 
 ```
 
-## 4.3. meson & ninja
+#### C. meson & ninja
 
 ```bash
 $ ./build-meson.sh distclean
@@ -257,7 +266,7 @@ $ (ninja  -C build_xxx install)
 
 ```
 
-## 4.4. GN
+#### D. GN
 
 ```bash
 $ ./build-gn.sh distclean
@@ -287,6 +296,127 @@ $ (ninja -v -C build_xxx)
 $ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/bin; cp -avr build_xxx/bin/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/bin)
 $ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/include; cp -avr build_xxx/include/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/include)
 $ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib; cp -avr build_xxx/lib/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib)
+
+```
+
+## 4.2. Cross-Compilation (aarch64)
+
+> Please install aarch64-buildroot-linux-gnu_sdk-buildroot.tar.gz into your system.
+>
+> You can check [helper_Buildroot-RaspberryPi3.md](https://github.com/lankahsu520/HelperX/blob/master/helper_Buildroot-RaspberryPi3.md) - Buildroot Raspberry Pi 3 helper,
+>
+> 2.2. To Generate Toolchain.
+
+#### A. make
+
+```bash
+$ ./build-make.sh distclean
+$ ./build-make.sh build aarch64
+$ tree install/
+install/
+├── bin
+│   ├── helloworld
+│   └── pipe2
+├── include
+│   └── helloworld_dbg.h
+└── lib
+    ├── libhelloworld.so -> libhelloworld.so.0
+    ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
+    └── libhelloworld.so.0.0.1
+
+3 directories, 6 files
+
+$ file install/bin/helloworld
+install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, stripped
+
+```
+
+>大致的命令如下
+
+```bash
+$ . confs/simple-aarch64.conf
+$ (make )
+$ (make install)
+```
+
+#### B. cmake & make
+
+```bash
+$ ./build-cmake.sh distclean
+$ ./build-cmake.sh build aarch64
+$ tree install/
+install/
+├── bin
+│   ├── helloworld
+│   └── pipe2
+├── include
+│   └── helloworld_dbg.h
+└── lib
+    ├── libhelloworld.so -> libhelloworld.so.0
+    ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
+    └── libhelloworld.so.0.0.1
+
+3 directories, 6 files
+
+$ ll install_Cpack/
+total 64
+drwxrwxr-x  3 lanka lanka  4096 Nov 13 15:23 ./
+drwxrwxr-x 12 lanka lanka  4096 Nov 13 15:23 ../
+drwxrwxr-x  3 lanka lanka  4096 Nov 13 15:23 _CPack_Packages/
+-rw-rw-r--  1 lanka lanka 16238 Nov 13 15:23 helloworld-0.0.1-Linux.deb
+-rw-rw-r--  1 lanka lanka 15449 Nov 13 15:23 helloworld-0.0.1-Linux.tar.gz
+-rw-rw-r--  1 lanka lanka 20230 Nov 13 15:23 helloworld-0.0.1-Linux.zip
+
+$ file install/bin/helloworld
+install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, with debug_info, not stripped
+
+```
+
+> 大致的命令如下
+
+```bash
+$ . confs/simple-aarch64.conf
+$ (mkdir -p build_xxx)
+$ (cd build_xxx; cmake -DCMAKE_INSTALL_PREFIX=/work/codebase/lankahsu520/makeXcmakeXmesonXgn/install -DCMAKE_TOOLCHAIN_FILE=/work/codebase/lankahsu520/makeXcmakeXmesonXgn/cmake/build_aarch64.cmake  ..)
+$ (cd  build_xxx; make )
+$ (cd  build_xxx; make install)
+$ (cd build_xxx; make package)
+
+```
+
+#### C. meson & ninja
+
+```bash
+$ ./build-meson.sh distclean
+$ ./build-meson.sh build aarch64
+$ tree install/
+install/
+├── bin
+│   ├── helloworld
+│   └── pipe2
+├── include
+│   └── helloworld_dbg.h
+└── lib
+    ├── libhelloworld_dbg.so -> libhelloworld_dbg.so.0
+    ├── libhelloworld_dbg.so.0 -> libhelloworld_dbg.so.0.0.1
+    └── libhelloworld_dbg.so.0.0.1
+
+3 directories, 6 files
+
+$ file install/bin/helloworld
+install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, with debug_info, not stripped
+
+```
+
+> 大致的命令如下
+
+```bash
+$ (mkdir -p build_xxx)
+$ (cp -vf /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_public/meson_options.txt /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_options.txt)
+$ (cp -vf /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_public/build_aarch64.meson /work/codebase/lankahsu520/makeXcmakeXmesonXgn/build.meson)
+$ (meson build_xxx --prefix /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install --cross-file /work/codebase/lankahsu520/makeXcmakeXmesonXgn/build.meson)
+$ (ninja  -C build_xxx)
+$ (ninja  -C build_xxx install)
 
 ```
 

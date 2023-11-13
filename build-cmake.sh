@@ -1,9 +1,12 @@
 #!/bin/bash
 
 RUN_SH=`basename $0`
-HINT="$0 {build|clean|distclean|rebuild}"
+HINT="$0 {build|clean|distclean|rebuild} [x86|aarch64]"
 
 ACTION=$1
+ARCH=$2
+[ -z "$ARCH" ] && export ARCH="x86"
+[ -z "$ARCH" ] || export PJ_ARCH="_$ARCH"
 
 #** Toolchain **
 
@@ -16,7 +19,7 @@ export SDK_USR_PREFIX_DIR="usr"
 
 export CONFIG_CUSTOMER_DEF_H="${PJ_ROOT}/include/customer_def.h"
 
-export CROSS_FILE="${PJ_ROOT}/cmake/build_x86.cmake"
+export CROSS_FILE="${PJ_ROOT}/cmake/build${PJ_ARCH}.cmake"
 
 export PJ_BUILD_DIR="build_xxx"
 export PJ_BUILD_VERBOSE="-v"
@@ -55,7 +58,7 @@ do_command_fn()
 
 do_env_fn()
 {
-	. confs/simple.conf >/dev/null 2>&1
+	. confs/simple${PJ_ARCH}.conf >/dev/null 2>&1
 	return 0
 }
 

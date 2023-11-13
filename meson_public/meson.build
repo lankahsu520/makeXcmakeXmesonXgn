@@ -112,7 +112,7 @@ dep_curl = cc.find_library('curl', required : LIB_REQUIRE_FULL)
 LIB_ARY += dep_curl
 
 #dependency('z')
-dep_z = cc.find_library('z', required : true)
+dep_z = cc.find_library('z', required : LIB_REQUIRE_FULL)
 LIB_ARY += dep_z
 
 #dependency('dl')

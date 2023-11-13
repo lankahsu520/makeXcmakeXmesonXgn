@@ -1,9 +1,12 @@
 #!/bin/bash
 
 RUN_SH=`basename $0`
-HINT="$0 {build|clean|distclean|rebuild}"
+HINT="$0 {build|clean|distclean|rebuild} [x86|aarch64]"
 
 ACTION=$1
+ARCH=$2
+[ -z "$ARCH" ] && export ARCH="x86"
+[ -z "$ARCH" ] || export PJ_ARCH="_$ARCH"
 
 #** Toolchain **
 
@@ -16,8 +19,8 @@ export SDK_USR_PREFIX_DIR="usr"
 
 export CONFIG_CUSTOMER_DEF_H="${PJ_ROOT}/include/customer_def.h"
 
-export CROSS_FILE="${PJ_ROOT}/meson_public/build_x86.meson"
-#export DEFAULT_CROSS_FILE="${PJ_ROOT}/meson_public/build_x86.meson"
+export DEFAULT_CROSS_FILE="${PJ_ROOT}/meson_public/build${PJ_ARCH}.meson"
+export CROSS_FILE="${PJ_ROOT}/build.meson"
 
 export PJ_BUILD_DIR="build_xxx"
 export PJ_BUILD_VERBOSE="-v"
@@ -59,7 +62,7 @@ do_command_fn()
 
 do_env_fn()
 {
-	#. confs/simple.conf >/dev/null 2>&1
+	. confs/simple${PJ_ARCH}.conf >/dev/null 2>&1
 	return 0
 }
 
@@ -100,7 +103,7 @@ distclean_fn()
 
 	DO_COMMAND="(rm -rf ${PJ_BUILD_DIR})"
 	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
-	DO_COMMAND="(rm -r ${CONFIG_MESON})"
+	DO_COMMAND="(rm -rf ${CONFIG_MESON} ${CROSS_FILE})"
 	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
 	distclean_install_fn
@@ -123,8 +126,8 @@ cfg_fn()
 	DO_COMMAND="(cp -vf ${DEFAULT_CONFIG_MESON} ${CONFIG_MESON})"
 	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
-	#DO_COMMAND="(cp -vf ${DEFAULT_CROSS_FILE} ${CROSS_FILE})"
-	#do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	DO_COMMAND="(cp -vf ${DEFAULT_CROSS_FILE} ${CROSS_FILE})"
+	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	datetime_fn

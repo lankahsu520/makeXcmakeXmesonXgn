@@ -1,39 +1,11 @@
+project('helloworld', 'c', version : '0.0.1')
 #Built-in options
 #https://mesonbuild.com/Builtin-options.html
 #project('helloworld', 'c', version : '0.0.1', default_options : ['b_asneeded=false', 'b_lundef=false'])
-project('helloworld', 'c', version : '0.0.1')
 
-VERSION_MAJOR = '0'
-VERSION_MINOR = '0'
-VERSION_REVISION = '1'
-VERSION_FULL = VERSION_MAJOR + '.' + VERSION_MINOR + '.' + VERSION_REVISION
-
-
-#** ENVIRONMENT **
+LIB_REQUIRE_FULL=false
 subdir('meson_public')
 
-
-#** message **
-compiler = meson.get_compiler('c')
-if compiler.get_argument_syntax() == 'gcc'
-	message('>> gcc !!!')
-else
-	message('>> Not gcc !!!')
-endif
-
-message('>> (project_version: @0@, project_version: @1@)'.format( meson.project_name(), meson.project_version() ))
-message('>> (current_source_dir: @0@)'.format( meson.current_source_dir() ))
-
-message('>> (build_machine cpu: @0@, system: @1@, endian: @2@)'.format( build_machine.cpu(), build_machine.system(), build_machine.endian() ))
-message('>> (source_root: @0@)'.format( meson.source_root() ))
-message('>> (host_machine.system: @0@)'.format( host_machine.system() ))
-
-message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
-message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
-message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
-message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
-
-#** CFLAGS & LDFLAGS **
 # I prefer to use CFLAGS_CUSTOMER
 COMPILER_ARG = []
 COMPILER_ARG += [ '-Wno-unused-value' ]
@@ -41,22 +13,19 @@ COMPILER_ARG += [ '-Wno-unused-result' ]
 COMPILER_ARG += [ '-Wno-format-truncation' ]
 add_project_arguments(COMPILER_ARG, language: 'c')
 
-message('>> (COMPILER_ARG: @0@)'.format( COMPILER_ARG ))
-message('>> (COMPILER_ARG: @0@)'.format( COMPILER_ARG ))
-message('>> (INC_DIR_ARY: @0@)'.format( INC_DIR_ARY ))
-message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
-message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
-
 #** LIBXXX_OBJS **
-VERSION = VERSION_FULL#meson.project_version()
+VERSION = meson.project_version()
 LIBNAME = 'helloworld_dbg'
 LIBXXX_OBJS = []
 LIBXXX_OBJS += [ 'helloworld_dbg.c' ]
 
-#LIBXXX_A = static_library(LIBNAME, LIBXXX_OBJS, c_args: CFLAGS_CUSTOMER, include_directories: INC_DIR_ARY, dependencies: LIB_ARY)
-LIBXXX_SO = shared_library(LIBNAME, LIBXXX_OBJS, version: VERSION, c_args: CFLAGS_CUSTOMER, include_directories: INC_DIR_ARY, dependencies: LIB_ARY, install: true, install_dir: INSTALL_LIB_DIR)
+LIBXXX_A = []
+#LIBXXX_A += static_library(LIBNAME, LIBXXX_OBJS, c_args: CFLAGS_CUSTOMER, include_directories: INC_DIR_ARY, dependencies: LIB_ARY)
+LIBXXX_SO = []
+LIBXXX_SO += shared_library(LIBNAME, LIBXXX_OBJS, version: VERSION, c_args: CFLAGS_CUSTOMER, include_directories: INC_DIR_ARY, dependencies: LIB_ARY, install: true, install_dir: INSTALL_LIB_DIR)
 
 LIB_LOCAL = [ ]
+LIB_LOCAL += [ LIBXXX_A ]
 LIB_LOCAL += [ LIBXXX_SO ]
 
 
@@ -85,6 +54,30 @@ CONFS = []
 
 install_data(CONFS, install_dir : INSTALL_IOT_RELATIVE_DIR)
 
+
+#** message **
+message('>> (project_version: @0@, project_version: @1@, current_source_dir: @2@)'.format( meson.project_name(), meson.project_version(), meson.current_source_dir() ))
+
+message('>> (build_machine cpu: @0@, system: @1@, endian: @2@)'.format( build_machine.cpu(), build_machine.system(), build_machine.endian() ))
+message('>> (project_source_root: @0@)'.format( meson.project_source_root() ))
+message('>> (host_machine.system: @0@)'.format( host_machine.system() ))
+
+message('>> (libdir: @0@, libdir: @1@, prefix: @2@)'.format( get_option('libdir'), get_option('localstatedir'), get_option('prefix') ))
+
+message('>> (SDK_BIN_DIR: @0@)'.format( get_option('SDK_BIN_DIR')))
+
+compiler = meson.get_compiler('c')
+if compiler.get_argument_syntax() == 'gcc'
+	message('>> gcc !!!')
+else
+	message('>> Not gcc !!!')
+endif
+
+message('>> (COMPILER_ARG: @0@)'.format( COMPILER_ARG ))
+message('>> (COMPILER_ARG: @0@)'.format( COMPILER_ARG ))
+message('>> (INC_DIR_ARY: @0@)'.format( INC_DIR_ARY ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
+message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
 
 #** extern **
 LIB_GLOBLE += [ LIBXXX_SO ]
