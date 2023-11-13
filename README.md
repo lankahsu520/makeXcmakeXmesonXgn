@@ -71,7 +71,10 @@ flowchart LR
 		direction LR
 		meson_build[meson.build]
 		meson_options[meson_options.txt]
-		cross[--cross-file ./meson_public/build_x86.meson]
+		cross[--cross-file build.meson]
+		subgraph meson_public[./meson_public]
+			meson_build_public[meson.build]
+		end
 	end
 	End([End])
 	
@@ -83,8 +86,6 @@ flowchart LR
 # upgrade meson to 0.63
 $ pip3 install meson==0.63
 ```
-
-
 
 ## 1.4. [GN (Generate Ninja)](https://gn.googlesource.com/gn/)
 
@@ -187,7 +188,7 @@ install/
 >大致的命令如下
 
 ```bash
-$ . confs/simple.conf
+$ . confs/simple_x86.conf
 $ (make )
 $ (make install)
 ```
@@ -225,7 +226,7 @@ drwxrwxr-x  3 lanka lanka  4096 十一 10 22:29 _CPack_Packages/
 > 大致的命令如下
 
 ```bash
-$ . confs/simple.conf
+$ . confs/simple_x86.conf
 $ (mkdir -p build_xxx)
 $ (cd build_xxx; cmake -DCMAKE_INSTALL_PREFIX=/work/codebase/lankahsu520-gitlab/helloworld/install -DCMAKE_TOOLCHAIN_FILE=/work/codebase/lankahsu520-gitlab/helloworld/cmake/build_x86.cmake  ..)
 $ (cd  build_xxx; make )
@@ -258,8 +259,10 @@ install/
 > 大致的命令如下
 
 ```bash
+$ . confs/simple_x86.conf
 $ (mkdir -p build_xxx)
 $ (cp -vf /work/codebase/lankahsu520-gitlab/helloworld/meson_public/meson_options.txt /work/codebase/lankahsu520-gitlab/helloworld/meson_options.txt)
+$ (cp -vf /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_public/build_x86.meson /work/codebase/lankahsu520/makeXcmakeXmesonXgn/build.meson)
 $ (meson build_xxx --prefix /work/codebase/lankahsu520/helloworld/install --cross-file /work/codebase/lankahsu520/helloworld/build.meson)
 $ (ninja  -C build_xxx)
 $ (ninja  -C build_xxx install)
@@ -290,6 +293,7 @@ install/
 > 大致的命令如下
 
 ```bash
+$ . confs/simple_x86.conf
 $ (mkdir -p build_xxx)
 $ (gn gen -C build_xxx)
 $ (ninja -v -C build_xxx)
@@ -411,12 +415,50 @@ install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SY
 > 大致的命令如下
 
 ```bash
+$ . confs/simple_aarch64.conf
 $ (mkdir -p build_xxx)
 $ (cp -vf /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_public/meson_options.txt /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_options.txt)
 $ (cp -vf /work/codebase/lankahsu520/makeXcmakeXmesonXgn/meson_public/build_aarch64.meson /work/codebase/lankahsu520/makeXcmakeXmesonXgn/build.meson)
 $ (meson build_xxx --prefix /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install --cross-file /work/codebase/lankahsu520/makeXcmakeXmesonXgn/build.meson)
 $ (ninja  -C build_xxx)
 $ (ninja  -C build_xxx install)
+
+```
+
+#### D. GN
+
+```bash
+$ ./build-gn.sh distclean
+$ ./build-gn.sh build aarch64
+$ tree install/
+install/
+├── bin
+│   ├── cppCaller
+│   ├── cppHelloWorldv2
+│   ├── helloworld
+│   └── pipe2
+├── include
+│   └── helloworld_dbg.h
+└── lib
+    └── libhelloworld.so
+
+3 directories, 6 files
+
+$ file install/bin/helloworld
+install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, with debug_info, not stripped
+
+```
+
+> 大致的命令如下
+
+```bash
+$ . confs/simple_aarch64.conf
+$ (mkdir -p build_xxx)
+$ (gn gen -C build_xxx)
+$ (ninja -v -C build_xxx)
+$ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/bin; cp -avr build_xxx/bin/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/bin)
+$ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/include; cp -avr build_xxx/include/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/include)
+$ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib; cp -avr build_xxx/lib/* /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib)
 
 ```
 

@@ -5,7 +5,8 @@ HINT="$0 {build|clean|distclean|test|rebuild} [x86|aarch64]"
 
 ACTION=$1
 ARCH=$2
-[ -z "$ARCH" ] || export PJ_ARCH="_$ARCH"
+[ -z "$ARCH" ] && export ARCH="x86"
+export PJ_ARCH="_$ARCH"
 
 #** Toolchain **
 
