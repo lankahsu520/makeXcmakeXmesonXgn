@@ -76,6 +76,8 @@ flowchart LR
 			meson_build_public[01 - meson.build]
 		end
 		meson_build_public-..-meson_options
+
+		style meson_options fill:#bbf,color:#000000,stroke:#f66,stroke-width:4px,stroke-dasharray: 5 2
 	end
 	End([End])
 	
