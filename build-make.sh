@@ -6,7 +6,7 @@ HINT="$0 {build|clean|distclean|test|rebuild} [x86|aarch64]"
 ACTION=$1
 ARCH=$2
 [ -z "$ARCH" ] && export ARCH="x86"
-export PJ_ARCH="_$ARCH"
+export PJ_TARGET_CONF="_$ARCH"
 
 #** Toolchain **
 
@@ -58,7 +58,7 @@ do_command_fn()
 
 do_env_fn()
 {
-	. confs/simple${PJ_ARCH}.conf >/dev/null 2>&1
+	. confs/simple${PJ_TARGET_CONF}.conf >/dev/null 2>&1
 	return 0
 }
 
@@ -188,6 +188,8 @@ build_cpack_fn()
 build_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+
+	distclean_fn
 
 	cfg_fn
 

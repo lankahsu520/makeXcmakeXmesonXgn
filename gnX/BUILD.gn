@@ -4,7 +4,6 @@ print(">> 03 - gnX/BUILD.gn")
 config("compiler_defaults") {
   cflags = [
     "-D_GNU_SOURCE"
-    ,"-Wformat-truncation=0"
     ,"-Wno-unused-value"
     ,"-Wno-unused-result"
     ,"-Wno-format-truncation"

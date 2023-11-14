@@ -29,7 +29,13 @@ if (PJ_HOST != "")
   PJ_CROSS = "${PJ_HOST}-"
 }
 
+PJ_CC = getenv("PJ_CC")
+PJ_CXX = getenv("PJ_CXX")
+
 CFLAGS = getenv("CFLAGS")
+CPPFLAGS = getenv("CPPFLAGS")
+CXXFLAGS = getenv("CXXFLAGS")
+LDFLAGS = getenv("LDFLAGS")
 
 SDK_BIN_DIR = getenv("SDK_BIN_DIR")
 SDK_INC_DIR = getenv("SDK_INC_DIR")

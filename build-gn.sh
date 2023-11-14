@@ -6,7 +6,7 @@ HINT="$0 {build|clean|distclean|rebuild} [x86|aarch64]"
 ACTION=$1
 ARCH=$2
 [ -z "$ARCH" ] && export ARCH="x86"
-export PJ_ARCH="_$ARCH"
+export PJ_TARGET_CONF="_$ARCH"
 
 #** Toolchain **
 
@@ -59,7 +59,7 @@ do_command_fn()
 
 do_env_fn()
 {
-	. confs/simple${PJ_ARCH}.conf >/dev/null 2>&1
+	. confs/simple${PJ_TARGET_CONF}.conf >/dev/null 2>&1
 	return 0
 }
 
@@ -98,10 +98,8 @@ distclean_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
-	DO_COMMAND="(rm -rf ${PJ_BUILD_DIR})"
+	DO_COMMAND="(rm -rf ${PJ_BUILD_DIR}; rm -f gnX/toolchain/BUILD.gn;)"
 	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
-
-	distclean_install_fn
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	return 0
@@ -136,7 +134,7 @@ build_setup_fn()
 
 	#** build setup **
 	if [ -d ${PJ_BUILD_DIR} ]; then
-		DO_COMMAND="(rm -rf ${PJ_BUILD_DIR}; gn gen ${PJ_GN_ARGS} --root=${PJ_ROOT} -C ${PJ_BUILD_DIR})"
+		DO_COMMAND="(ln -s BUILD${PJ_TARGET_CONF}.gn gnX/toolchain/BUILD.gn; gn gen ${PJ_GN_ARGS} --root=${PJ_ROOT} -C ${PJ_BUILD_DIR})"
 		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	fi
 
@@ -173,8 +171,6 @@ build_install_fn()
 
 		DO_COMMAND="(mkdir -p ${SDK_LIB_DIR}; cp -avr ${PJ_BUILD_DIR}/lib/* ${SDK_LIB_DIR})"
 		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
-
-
 	fi
 
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
@@ -206,6 +202,8 @@ build_fn()
 {
 	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
+	distclean_fn
+
 	cfg_fn
 
 	build_setup_fn
@@ -234,6 +232,7 @@ main_fn()
 		;;
 		distclean)
 			distclean_fn
+			distclean_install_fn
 		;;
 		*)
 			showusage_fn
