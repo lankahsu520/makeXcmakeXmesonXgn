@@ -167,6 +167,22 @@ flowchart LR
 
 # 4. Build
 
+```mermaid
+flowchart TD
+	subgraph helloworld
+		helloworld.c
+	end
+	subgraph pipe2
+		pipe2.c
+	end
+	subgraph helloworld-123
+		helloworld-123.c
+		subgraph libhelloworld.so
+			helloworld_dbg.c
+		end
+	end
+```
+
 ## 4.1. Native-Compilation
 
 #### A. make
@@ -178,6 +194,7 @@ $ tree install/
 install/
 ├── bin
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
@@ -186,7 +203,7 @@ install/
     ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
     └── libhelloworld.so.0.0.1
 
-3 directories, 6 files
+3 directories, 7 files
 
 ```
 >大致的命令如下
@@ -206,6 +223,7 @@ $ tree install/
 install/
 ├── bin
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
@@ -214,16 +232,16 @@ install/
     ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
     └── libhelloworld.so.0.0.1
 
-3 directories, 6 files
+3 directories, 7 files
 
 $ ll install_Cpack/
-total 64
-drwxrwxr-x  3 lanka lanka  4096 十一 10 22:29 ./
-drwxrwxr-x 12 lanka lanka  4096 十一 10 22:29 ../
-drwxrwxr-x  3 lanka lanka  4096 十一 10 22:29 _CPack_Packages/
--rw-rw-r--  1 lanka lanka 16216 十一 10 22:29 helloworld-0.0.1-Linux.deb
--rw-rw-r--  1 lanka lanka 15421 十一 10 22:29 helloworld-0.0.1-Linux.tar.gz
--rw-rw-r--  1 lanka lanka 20185 十一 10 22:29 helloworld-0.0.1-Linux.zip
+total 80
+drwxrwxr-x  3 lanka lanka  4096 十一 20 10:11 ./
+drwxrwxr-x 12 lanka lanka  4096 十一 20 10:11 ../
+drwxrwxr-x  3 lanka lanka  4096 十一 20 10:06 _CPack_Packages/
+-rw-rw-r--  1 lanka lanka 18578 十一 20 10:11 helloworld-123-0.0.1-Linux.deb
+-rw-rw-r--  1 lanka lanka 17856 十一 20 10:11 helloworld-123-0.0.1-Linux.tar.gz
+-rw-rw-r--  1 lanka lanka 24714 十一 20 10:11 helloworld-123-0.0.1-Linux.zip
 
 ```
 
@@ -248,6 +266,7 @@ $ tree install/
 install/
 ├── bin
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
@@ -256,7 +275,7 @@ install/
     ├── libhelloworld_dbg.so.0 -> libhelloworld_dbg.so.0.0.1
     └── libhelloworld_dbg.so.0.0.1
 
-3 directories, 6 files
+3 directories, 7 files
 
 ```
 
@@ -284,13 +303,14 @@ install/
 │   ├── cppCaller
 │   ├── cppHelloWorldv2
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
 └── lib
     └── libhelloworld.so
 
-3 directories, 6 files
+3 directories, 7 file
 
 ```
 
@@ -324,6 +344,7 @@ $ tree install/
 install/
 ├── bin
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
@@ -332,7 +353,7 @@ install/
     ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
     └── libhelloworld.so.0.0.1
 
-3 directories, 6 files
+3 directories, 7 files
 
 $ file install/bin/helloworld
 install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, stripped
@@ -356,6 +377,7 @@ $ tree install/
 install/
 ├── bin
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
@@ -364,16 +386,16 @@ install/
     ├── libhelloworld.so.0 -> libhelloworld.so.0.0.1
     └── libhelloworld.so.0.0.1
 
-3 directories, 6 files
+3 directories, 7 files
 
 $ ll install_Cpack/
-total 64
-drwxrwxr-x  3 lanka lanka  4096 Nov 13 15:23 ./
-drwxrwxr-x 12 lanka lanka  4096 Nov 13 15:23 ../
-drwxrwxr-x  3 lanka lanka  4096 Nov 13 15:23 _CPack_Packages/
--rw-rw-r--  1 lanka lanka 16238 Nov 13 15:23 helloworld-0.0.1-Linux.deb
--rw-rw-r--  1 lanka lanka 15449 Nov 13 15:23 helloworld-0.0.1-Linux.tar.gz
--rw-rw-r--  1 lanka lanka 20230 Nov 13 15:23 helloworld-0.0.1-Linux.zip
+total 68
+drwxrwxr-x  3 lanka lanka  4096 十一 20 10:22 ./
+drwxrwxr-x 12 lanka lanka  4096 十一 20 10:22 ../
+drwxrwxr-x  3 lanka lanka  4096 十一 20 10:22 _CPack_Packages/
+-rw-rw-r--  1 lanka lanka 16336 十一 20 10:22 helloworld-123-0.0.1-Linux.deb
+-rw-rw-r--  1 lanka lanka 15677 十一 20 10:22 helloworld-123-0.0.1-Linux.tar.gz
+-rw-rw-r--  1 lanka lanka 21736 十一 20 10:22 helloworld-123-0.0.1-Linux.zip
 
 $ file install/bin/helloworld
 install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, with debug_info, not stripped
@@ -401,6 +423,7 @@ $ tree install/
 install/
 ├── bin
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
@@ -409,7 +432,7 @@ install/
     ├── libhelloworld_dbg.so.0 -> libhelloworld_dbg.so.0.0.1
     └── libhelloworld_dbg.so.0.0.1
 
-3 directories, 6 files
+3 directories, 7 files
 
 $ file install/bin/helloworld
 install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, with debug_info, not stripped
@@ -435,18 +458,19 @@ $ (ninja  -C build_xxx install)
 $ ./build-gn.sh distclean
 $ ./build-gn.sh build aarch64
 $ tree install/
-install/
+install
 ├── bin
 │   ├── cppCaller
 │   ├── cppHelloWorldv2
 │   ├── helloworld
+│   ├── helloworld-123
 │   └── pipe2
 ├── include
 │   └── helloworld_dbg.h
 └── lib
     └── libhelloworld.so
 
-3 directories, 6 files
+3 directories, 7 files
 
 $ file install/bin/helloworld
 install/bin/helloworld: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 5.10.0, with debug_info, not stripped

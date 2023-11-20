@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16.3)
-project(helloworld)
+project(helloworld-123)
 
 set(CMAKE_BUILD_TYPE Release)
 
@@ -93,13 +93,20 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBNAME_SHARED})
 #install(TARGETS  ${CMAKE_PROJECT_NAME}
 #		DESTINATION ${INSTALL_BIN_DIR}
 #	)
+list(APPEND DUMMY_BINS ${CMAKE_PROJECT_NAME})
 
 add_executable(pipe2 pipe2.c)
 #install(TARGETS  pipe2
 #		DESTINATION ${INSTALL_BIN_DIR}
 #	)
+list(APPEND DUMMY_BINS pipe2)
 
-install(TARGETS ${CMAKE_PROJECT_NAME} pipe2 ${LIBNAME_SHARED}
+add_executable(helloworld helloworld.c)
+list(APPEND DUMMY_BINS helloworld)
+
+install(TARGETS
+		${DUMMY_BINS}
+		${LIBNAME_SHARED}
 		RUNTIME DESTINATION ${INSTALL_BIN_DIR}
 		LIBRARY DESTINATION ${INSTALL_LIB_DIR}
 		PRIVATE_HEADER DESTINATION ${INSTALL_INC_DIR}

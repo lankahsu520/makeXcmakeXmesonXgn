@@ -1,4 +1,4 @@
-project('helloworld', 'c', version : '0.0.1')
+project('helloworld-123', 'c', version : '0.0.1')
 #Built-in options
 #https://mesonbuild.com/Builtin-options.html
 #project('helloworld', 'c', version : '0.0.1', default_options : ['b_asneeded=false', 'b_lundef=false'])
@@ -42,6 +42,7 @@ PROJECT_NAME = meson.project_name()
 
 executable(PROJECT_NAME, PROJECT_NAME + '.c', c_args: CFLAGS_CUSTOMER, link_with: LIB_LOCAL, dependencies: LIB_ARY, include_directories: INC_DIR_ARY, install: true, install_dir: INSTALL_BIN_DIR)
 executable('pipe2', 'pipe2.c', c_args: CFLAGS_CUSTOMER, link_with: LIB_LOCAL, dependencies: LIB_ARY, install: true, install_dir: INSTALL_BIN_DIR)
+executable('helloworld', 'helloworld.c', c_args: CFLAGS_CUSTOMER, link_with: LIB_LOCAL, dependencies: LIB_ARY, install: true, install_dir: INSTALL_BIN_DIR)
 
 
 #** Target (SHELL_SBINS) **

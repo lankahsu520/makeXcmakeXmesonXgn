@@ -31,7 +31,7 @@ extern "C" {
 #include <sys/types.h>
 #include <unistd.h>
 
-#define TAG "helloworld"
+//#define TAG "helloworld"
 
 //******************************************************************************
 //** define **

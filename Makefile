@@ -85,6 +85,7 @@ CLEAN_BINS += \
 #** Target (DUMMY_BINS) **
 DUMMY_BINS += \
 						pipe2 \
+						helloworld-123 \
 						helloworld
 
 # cpp

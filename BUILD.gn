@@ -52,8 +52,8 @@ print(">> (CLEAN_BINS: $CLEAN_BINS)")
 #** Target (DUMMY_BINS) **
 DUMMY_BINS += [ "helloworld" ]
 # https://gn.googlesource.com/gn/+/main/docs/reference.md#func_executable
-executable("helloworld") {
-  sources = [ "helloworld.c" ]
+executable("helloworld-123") {
+  sources = [ "helloworld-123.c" ]
 
   deps = [
     ":helloworld_shared",
@@ -74,6 +74,17 @@ executable("pipe2")
   if ( is_debug == true )
   {
     print(">> executable / pipe2 - $configs")
+  }
+}
+
+DUMMY_BINS += [ "helloworld" ]
+executable("helloworld")
+{
+  sources = [ "helloworld.c" ]
+
+  if ( is_debug == true )
+  {
+    print(">> executable / helloworld - $configs")
   }
 }
 
