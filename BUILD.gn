@@ -62,7 +62,7 @@ executable("helloworld-123") {
 
   if ( is_debug == true )
   {
-    print(">> executable / helloworld - $configs")
+    print(">> executable / helloworld-123 - $configs")
   }
 }
 
