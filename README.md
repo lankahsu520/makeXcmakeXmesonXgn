@@ -497,10 +497,7 @@ $ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib; cp -avr 
 
 ```
 
-# 6. License
-> makeXcmakeXmeson is under the New BSD License (BSD-3-Clause).
-
-# 7. Documentation
+# 6. Documentation
 
 > Run an example and read it.
 
@@ -596,6 +593,14 @@ declare_args()
   is_debug = false
 }
 ```
+
+# Author
+
+Created and designed by [Lanka Hsu](lankahsu@gmail.com).
+
+# License
+
+[makeXcmakeXmesonXgn](https://github.com/lankahsu520/makeXcmakeXmesonXgn) is available under the BSD-3-Clause license. See the LICENSE file for more info.
 
 
 
