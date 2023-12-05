@@ -63,6 +63,8 @@ flowchart LR
 > 這些都對於 Cross-Compilation 是很不友善的。
 >
 > 另外對於一個大專案，有 make, Perl, shell script, cmake 等混合之編譯環境， 就是這麼困難修改。
+>
+> 有時要解決 python 版本的問題，真的很浪費時間。
 
 ```mermaid
 flowchart LR
