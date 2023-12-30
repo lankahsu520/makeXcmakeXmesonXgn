@@ -531,9 +531,9 @@ $ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib; cp -avr 
 > gn args out/my_build
 > ```
 >
-> 照著指示操作，新增了 args ，但是呢 ? 怎麼用 ?
->
-> 而且 "gn args --list"  也沒有相應的資料，總之從一開始到放棄只要10分鐘。
+> 照著指示操作，新增了 args - is_debug，但是呢 ? 怎麼用 ? 而且 "gn args --list"  也沒有相應的資料，總之從一開始到放棄只要10分鐘。
+
+> 這邊告訴各位，沒有在 BUILDCONFIG.gn 先宣告 is_debug，之後你在編譯目錄 out/my_build 修改也是沒用的。
 
 #### B. [GN Reference](https://gn.googlesource.com/gn/+/main/docs/reference.md)
 
