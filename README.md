@@ -146,7 +146,7 @@ flowchart LR
 				BUILD.gn-toolchain[03 - BUILD.gn]
 			end
 		end
-		subgraph cCaller[./cCaller]
+		subgraph cCaller[./cppTest]
 			BUILD.gn-cCaller[03 - BUILD.gn]
 		end
 		.gn --> BUILDCONFIG.gn --> BUILD.gn 
