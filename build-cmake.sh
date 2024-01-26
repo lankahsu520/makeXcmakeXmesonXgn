@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RUN_SH=`basename $0`
-HINT="$0 {build|clean|distclean|rebuild} [x86|aarch64]"
+HINT="$0 {build|clean|distclean|rebuild} [x86|i486|aarch64]"
 
 ACTION=$1
 ARCH=$2

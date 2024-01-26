@@ -85,7 +85,11 @@ set_defaults("static_library") {
 }
 
 # https://gn.googlesource.com/gn/+/main/docs/reference.md#func_set_default_toolchain
-if (target_cpu == "aarch64")
+if (target_cpu == "i486")
+{
+  set_default_toolchain("//gnX/toolchain:i486")
+}
+else if (target_cpu == "aarch64")
 {
   set_default_toolchain("//gnX/toolchain:aarch64")
 }

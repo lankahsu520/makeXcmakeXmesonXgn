@@ -161,7 +161,7 @@ flowchart LR
 ```
 # 2. Depend on
 
-
+- [CrossCompilationX](https://github.com/lankahsu520/CrossCompilationX)
 
 # 3. Current Status
 
@@ -253,8 +253,8 @@ drwxrwxr-x  3 lanka lanka  4096 十一 20 10:06 _CPack_Packages/
 $ . confs/simple_x86.conf
 $ (mkdir -p build_xxx)
 $ (cd build_xxx; cmake -DCMAKE_INSTALL_PREFIX=/work/codebase/lankahsu520-gitlab/helloworld/install -DCMAKE_TOOLCHAIN_FILE=/work/codebase/lankahsu520-gitlab/helloworld/cmake/build_x86.cmake  ..)
-$ (cd  build_xxx; make )
-$ (cd  build_xxx; make install)
+$ (cd build_xxx; make )
+$ (cd build_xxx; make install)
 $ (cd build_xxx; make package)
 
 ```
@@ -492,6 +492,36 @@ $ (mkdir -p /work/codebase/lankahsu520/makeXcmakeXmesonXgn/install/lib; cp -avr 
 
 ```
 
+## 4.3. Cross-Compilation (i486)
+
+> 只要參數換成 i486，其它操作相同。
+>
+> 雖然 x86_64 能向下相容，gcc -m32也能編譯出 32-Bit，但還是特別把 i486 當成 Cross。因為32-Bit 和 64-Bit 有很大的差異，另外對應的作業系統也相當的老舊，那怕那一天拿到一台10年前的電腦，也能有所應付。
+
+#### A. make
+
+```bas
+$ ./build-make.sh build i486
+```
+
+#### B. cmake & make
+
+```bash
+$ ./build-cmake.sh build i486
+```
+
+#### C. meson & ninja
+
+```bash
+$ ./build-meson.sh build aarch64
+```
+
+#### D. GN
+
+```bash
+$ ./build-gn.sh build aarch64
+```
+
 # 5. Example or Usage
 
 ```bash
@@ -598,11 +628,11 @@ declare_args()
 
 # Author
 
-Created and designed by [Lanka Hsu](lankahsu@gmail.com).
+> Created and designed by [Lanka Hsu](lankahsu@gmail.com).
 
 # License
 
-[makeXcmakeXmesonXgn](https://github.com/lankahsu520/makeXcmakeXmesonXgn) is available under the BSD-3-Clause license. See the LICENSE file for more info.
+> [makeXcmakeXmesonXgn](https://github.com/lankahsu520/makeXcmakeXmesonXgn) is available under the BSD-3-Clause license. See the LICENSE file for more info.
 
 
 

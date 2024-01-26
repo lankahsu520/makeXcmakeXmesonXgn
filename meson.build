@@ -83,3 +83,31 @@ message('>> (CFLAGS_CUSTOMER: @0@)'.format( CFLAGS_CUSTOMER ))
 
 #** extern **
 LIB_GLOBLE += [ LIBXXX_SO ]
+
+pkg = import('pkgconfig')
+zdep = dependency('zlib', version : '>=1.2.8')
+#zdep = dependency('zlib', method : 'pkg-config')
+#zdep = dependency('zlib', method : 'config-tool')
+#zdep = dependency('zlib', version : '>=1.2.8', fallback: ['zlib', 'libz_dep'])
+glib_deps = dependency('glib-2.0')
+#gio_dep = dependency('gio-2.0', fallback: ['glib', 'libgio_dep'])
+
+#zdep = dependency('ZLIB', method : 'cmake', modules : ['ZLIB::ZLIB'])
+#glib_deps = dependency('glib-2.0', version : '>= 2.44.0', fallback: ['glib', 'libglib_dep'])
+#glib_deps = dependency('glib-2.0', version : '>= 2.44.0')
+#zdep_prefix = zdep.get_pkgconfig_variable('prefix')
+
+#message('>> (zdep: @0@)'.format( zdep_prefix ))
+if zdep.found()
+   message('>>>>>>>>>>>>>>> zdep.name():', zdep.name())
+   message('>>>>>>>>>>>>>>> zdep.get_variable():', zdep.get_variable('Libs'))
+   message('>>>>>>>>>>>>>>> zdep.include_type():', zdep.include_type())
+   #message('>>>>>>>>>>>>>>> zdep.partial_dependency():', zdep.partial_dependency())
+   message('>>>>>>>>>>>>>>> zdep.type_name():', zdep.type_name())
+   message('>>>>>>>>>>>>>>> zdep.version():', zdep.version())
+endif
+message('>> (zdep: @0@)'.format( zdep ))
+message('>> (zdep: @0@)'.format( zdep ))
+#message('>> (glib_deps: @0@)'.format( glib_deps ))
+#message('>> (glib_deps: @0@)'.format( glib_deps ))
+#message('>> (glib_deps: @0@)'.format( glib_deps ))
