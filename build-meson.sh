@@ -37,7 +37,7 @@ now_fn()
 	return $NOW_t
 }
 
-datetime_fn()
+datetimeX_fn()
 {
 	PROMPT=$1
 
@@ -51,12 +51,12 @@ datetime_fn()
 	return 0
 }
 
-do_command_fn()
+do_commandX_fn()
 {
 	FUNCX=$1
 	LINEX=$2
 	DO_COMMAND=$3
-	datetime_fn "${FUNCX}:${LINEX}- [$DO_COMMAND]"
+	datetimeX_fn "${FUNCX}:${LINEX}- [$DO_COMMAND]"
 	sh -c "$DO_COMMAND"
 }
 
@@ -68,7 +68,7 @@ do_env_fn()
 
 die_fn()
 {
-	datetime_fn "$@"; datetime_fn ""
+	datetimeX_fn "$@"; datetimeX_fn ""
 	exit 1
 }
 
@@ -82,7 +82,7 @@ distclean_install_fn()
 		case $yn in
 			[Yy]* )
 				DO_COMMAND="rm -rf ${SDK_ROOT_DIR} ${PJ_CPACK}"
-				do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+				do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 				break
 				;;
 			[Nn]* )
@@ -99,111 +99,111 @@ distclean_install_fn()
 
 distclean_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	DO_COMMAND="(rm -rf ${PJ_BUILD_DIR})"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	DO_COMMAND="(rm -rf ${CONFIG_MESON} ${CROSS_FILE})"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
 	return 0
 }
 
 cfg_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	#** customer_def.h **
 
 	#** build_xxx **
 	DO_COMMAND="(mkdir -p ${PJ_BUILD_DIR})"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
 	#** meson_options.txt **
 	DO_COMMAND="(cp -vf ${DEFAULT_CONFIG_MESON} ${CONFIG_MESON})"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
 	DO_COMMAND="(cp -vf ${DEFAULT_CROSS_FILE} ${CROSS_FILE})"
-	do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+	do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	datetime_fn
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn
 	return 0
 }
 
 showusage_fn()
 {
-	#datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
-	printf "$HINT"; datetime_fn ""; exit 1
+	#datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	printf "$HINT"; datetimeX_fn ""; exit 1
 
 	return 0
 }
 
 build_setup_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	#** build setup **
 	if [ -d ${PJ_BUILD_DIR} ]; then
 		DO_COMMAND="(meson ${PJ_BUILD_DIR} --prefix ${SDK_ROOT_DIR} --cross-file ${CROSS_FILE})"
-		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+		do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	fi
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	datetime_fn
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn
 }
 
 build_run_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	if [ -d ${PJ_BUILD_DIR} ]; then
 		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR})"
-		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+		do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	fi
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	datetime_fn
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn
 }
 
 build_install_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	if [ -d ${PJ_BUILD_DIR} ]; then
 		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR} install)"
-		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+		do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	fi
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	datetime_fn
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn
 }
 
 build_clean_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	if [ -d ${PJ_BUILD_DIR} ]; then
 		DO_COMMAND="(ninja ${PJ_BUILD_VERBOSE} -C ${PJ_BUILD_DIR} clean)"
-		do_command_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
+		do_commandX_fn "${FUNCNAME[0]}" "${LINENO}" "${DO_COMMAND}"
 	fi
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	datetime_fn
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn
 }
 
 build_cpack_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
-	datetime_fn
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ok."
+	datetimeX_fn
 }
 
 build_fn()
 {
-	datetime_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
+	datetimeX_fn "${FUNCNAME[0]}:${LINENO}- ($PID) ..."
 
 	distclean_fn
 
