@@ -626,6 +626,20 @@ declare_args()
 }
 ```
 
+## II.2. WARNING: Running the setup command as `meson [options]` instead of `meson setup [options]` is ambiguous and deprecated.
+
+> 這就是為什麼不是很喜歡用 meson；才出市沒多久，就要一直追著版本修改。
+
+```bash
+$ mkdir build_xxx
+
+# 原本
+$ meson build_xxx
+# 換成
+$ meson setup build_xxx
+$ meson setup --reconfigure build_xxx
+```
+
 # Author
 
 > Created and designed by [Lanka Hsu](lankahsu@gmail.com).
