@@ -162,6 +162,7 @@ flowchart LR
 # 2. Depend on
 
 - [CrossCompilationX](https://github.com/lankahsu520/CrossCompilationX)
+- [Kconfig-123](https://github.com/lankahsu520/makeXcmakeXmesonXgn/blob/main/Kconfig-123/helper_Kconfig.md)
 
 # 3. Current Status
 

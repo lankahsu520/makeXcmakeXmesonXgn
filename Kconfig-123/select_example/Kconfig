@@ -1,0 +1,13 @@
+menu "Select Configuration"
+
+config BLUETOOTH
+	bool "Enable Bluetooth"
+	default y
+	select BLUEZ_556
+	help
+		Enable Bluetooth.
+
+config BLUEZ_556
+	bool "BlueZ 5.56"
+	default n
+endmenu

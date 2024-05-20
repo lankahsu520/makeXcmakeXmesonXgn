@@ -1,0 +1,114 @@
+menu "Example Configuration"
+	config EXAMPLE_FEATURE
+		bool "Enable Example Feature"
+		default y
+		help
+			This is an example feature. Enable it to see the example in action.
+
+	config EXAMPLE_PARAMETER
+		int "Example Parameter"
+		range 0 99
+		default 10
+		depends on EXAMPLE_FEATURE
+		help
+			This parameter controls some aspect of the example feature.
+		comment "This is a comment"
+endmenu
+
+menu "Simple Type"
+	config EXAMPLE_BOOL
+		bool "Enable EXAMPLE_BOOL"
+
+	config EXAMPLE_TRISTATE
+		tristate "Enable EXAMPLE_TRISTATE"
+		default m
+
+	config EXAMPLE_STRING
+		string "EXAMPLE_STRING - Please input string"
+		default "Hello World !"
+
+	config EXAMPLE_HEX
+		hex "EXAMPLE_HEX - Please input hex"
+		range 0x00 0x10
+		default 0x01
+
+	config EXAMPLE_INT
+		int "EXAMPLE_INT - Please input integer"
+		range 0 99
+		default 10
+endmenu
+
+menu "main choice and sub choice 1"
+	choice
+		prompt	"main choice S1 and S2"
+		default S1
+		config	S1
+			bool	"S1"
+		config	S2
+			bool	"S2"
+	endchoice
+
+	choice
+		prompt	"sub choice of S1"
+		default S1_2
+		depends on S1
+		config	S1_1
+			bool	"S1-1"
+		config	S1_2
+			bool	"S1-2"
+	endchoice
+
+	choice
+		prompt	"sub choice S2"
+		default S2_1
+		depends on S2
+		config	S2_1
+			bool	"S2-1"
+		config	S2_2
+			bool	"S2-2"
+	endchoice
+endmenu
+
+menu "main choice and sub choice 2"
+	choice
+		prompt	"main choice S3 or S4"
+		config	S3
+			bool "S3"
+		config	S4
+			bool	"S4"
+	endchoice
+
+	choice
+		prompt	"sub choice S3 and S4"
+		default S3_2
+
+		config	S3_1
+			bool	"S3-1"
+			depends on S3
+		config	S3_2
+			bool	"S3-2"
+			depends on S3
+		config	S4_1
+			bool	"S4-1"
+			depends on S4
+		config	S4_2
+			bool	"S4-2"
+			depends on S4
+	endchoice
+endmenu
+
+menuconfig S5
+	bool "menuconfig S5"
+	default n
+	
+	if S5
+		config S5_1
+		bool "S5-1"
+		default n
+		
+		config S5_2
+		bool "S5-2"
+		default y
+	endif
+
+source "select_example/Kconfig"
