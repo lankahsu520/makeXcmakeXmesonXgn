@@ -420,6 +420,14 @@ config BLUEZ_556
 
 # II. Debug
 
+## II.1. WARNING: Menuconfig may fail because of the TERM environment variable is set to "xterm".
+
+```bash
+$ echo $TERM
+xterm
+$ export TERM=linux
+```
+
 # III. Glossary
 
 # IV. Tool Usage
