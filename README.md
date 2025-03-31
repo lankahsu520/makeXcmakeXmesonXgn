@@ -50,6 +50,13 @@ flowchart LR
 
 ```
 
+>  <font color="red">cmake 3.xx vs 4.xx，不相容，請珍惜自己的保貴時間。退回 3.xx。</font>
+
+```bash
+# Install specific package version, 最新版可能造成的問題更多
+$ pip install cmake==3.31.1
+```
+
 ## 1.3. meson
 
 > meson_options.txt 要與 meson.build (第一個讀取的) 放在同一層目錄。
@@ -640,6 +647,34 @@ $ meson build_xxx
 $ meson setup build_xxx
 $ meson setup --reconfigure build_xxx
 ```
+
+## II.3. Compatibility with CMake < 3.5 has been removed from CMake.
+
+> CMakeLists.txt 中 cmake_minimum_required(VERSION 2.8.5)，可是系統是 cmake version 4.0.0，
+>
+> ```
+> CMake Error at CMakeLists.txt:2 (cmake_minimum_required):
+> Compatibility with CMake < 3.5 has been removed from CMake.
+> 
+> Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+> to tell CMake that the project requires at least <min> but has been updated
+> to work with policies introduced by <max> or earlier.
+> 
+> Or, add -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to try configuring anyway.
+> ```
+>
+> 必須更改 CMakeLists.txt 為 cmake_minimum_required(VERSION 3.5)。
+
+> 另外一個解決方式就是安特定的版本，如下
+>
+> ```bash
+> # Install specific package version
+> $ pip install cmake==3.31.1
+> ```
+
+> 另外 python 升級後，cmake、 meson等都會受到影響。也因此成編譯失敗，而錯的不是編譯的人，是構建工具本身的問題。要解決這個問題，最終就是編譯主機不要進行升級，但是這是好的解決方法嗎？
+>
+> 有人的會選擇 python Virtual Environment，但是這邊要提醒有可能會發生 python Virtual Environment 裏又疊加一層 python Virtual Environment。
 
 # Author
 
