@@ -54,7 +54,7 @@ flowchart LR
 
 ```bash
 # Install specific package version, 最新版可能造成的問題更多
-$ pip install cmake==3.31.1
+$ pip install cmake==3.31.4
 ```
 
 ## 1.3. meson
