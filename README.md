@@ -168,8 +168,8 @@ flowchart LR
 ```
 # 2. Depend on
 
-- [CrossCompilationX](https://github.com/lankahsu520/CrossCompilationX)
-- [KconfigX](https://github.com/lankahsu520/KconfigX/blob/main/README.md)
+#### - [CrossCompilationX](https://github.com/lankahsu520/CrossCompilationX)
+#### - [KconfigX](https://github.com/lankahsu520/KconfigX/blob/main/README.md)
 
 # 3. Current Status
 
